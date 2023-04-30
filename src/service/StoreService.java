@@ -46,9 +46,46 @@ public class StoreService {
         }
         return null;
     }
-    public void checkLogIn() {
+    public void checkLogInCustomer() {
         Customer customer = loginCustomer();
         if (customer != null) {
+            System.out.println("Successful Login");
+        } else {
+            System.out.println("Invalid username or password");
+        }
+    }
+
+    /////////////////////////////
+    public void registerAdmin() {
+        Scanner scanner = new Scanner(System.in);
+        String name,  email,  password;
+        System.out.println("enter admin name");
+        name = scanner.next();
+        System.out.println("enter admin email");
+        email = scanner.next();
+        System.out.println("enter admin password");
+        password = scanner.next();
+        Admin newAdmin = new Admin(name, email, password);
+        this.store.getAdmins().add(newAdmin);
+    }
+
+    public Admin loginAdmin(){
+        Scanner scanner = new Scanner(System.in);
+        String name, password;
+        System.out.println("enter admin name");
+        name = scanner.next();
+        System.out.println("enter admin password");
+        password = scanner.next();
+        for(Admin admin : store.getAdmins()){
+            if(admin.getUserName().equals(name) && admin.checkPassword(password)){
+                return admin;
+            }
+        }
+        return null;
+    }
+    public void checkLogInAdmin() {
+        Admin admin = loginAdmin();
+        if (admin != null) {
             System.out.println("Successful Login");
         } else {
             System.out.println("Invalid username or password");

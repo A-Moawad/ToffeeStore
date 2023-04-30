@@ -38,20 +38,20 @@ public abstract class User {
         this.password = password;
     }
 
-//     boolean  checkPassword(String password);
+     public abstract boolean    checkPassword(String password);
 
 
 
-    public void signUp(String userName, String email, String password){
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-    }
-
-    public void login(String userName, String password){ // login with username and pass only
-        this.userName = userName;
-        this.password = password;
-    }
+//    public void signUp(String userName, String email, String password){
+//        this.userName = userName;
+//        this.email = email;
+//        this.password = password;
+//    }
+//
+//    public void login(String userName, String password){ // login with username and pass only
+//        this.userName = userName;
+//        this.password = password;
+//    }
 
     public abstract String getData();
 

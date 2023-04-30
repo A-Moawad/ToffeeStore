@@ -19,7 +19,7 @@ public class Admin extends User{
     return this.getUserName() + " " + this.getEmail() + " " + this.getPassword();
 
 }
-    boolean  checkPassword(String password){
+    public boolean  checkPassword(String password){
         return this.getPassword().equals(password);
     }
 

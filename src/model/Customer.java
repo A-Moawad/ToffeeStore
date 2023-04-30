@@ -10,6 +10,9 @@ public class Customer extends User {
     private ArrayList<Integer> giftVoucher;
     private Cart cart;
 
+    public Customer() {
+    }
+
     public Customer(String userName, String email, String password) {
         super(userName, email, password);
     }

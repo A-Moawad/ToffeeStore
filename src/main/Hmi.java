@@ -25,72 +25,60 @@ public class Hmi { // to manage the system
 
         do{
             System.out.println("What do you want to do ?");
-            System.out.println("1) Sign Up");
-            System.out.println("2) Login");
-            System.out.println("3) add item to cart");
-            System.out.println("4) remove item from cart");
-            System.out.println("5) print all customer");
-            System.out.println("6) Display all item in the cart");
+            System.out.println("1) Sign Up as a customer");
+            System.out.println("2) Login as customer");
+            System.out.println("3) Sign Up as an Admin");
+            System.out.println("4) Login as Admin");
+            System.out.println("5) add item to cart");
+            System.out.println("6) remove item from cart");
+            System.out.println("7) print all customer");
+            System.out.println("8) print all admins");
+            System.out.println("9) Display all item in the cart");
             action = scanner.nextInt();
             switch (action){
                 case 1:
-                    Hmi.storeService.registerCustomer();
+                    Hmi.storeService.registerCustomer(); // done
                     break;
                 case 2:
-                    Hmi.storeService.checkLogIn();
+                    Hmi.storeService.checkLogInCustomer(); // done
                     break;
                 case 3:
-                    Hmi.addToCart();
+                    Hmi.storeService.registerAdmin();  // done
+                    break;
+                case 4:
+                    Hmi.storeService.checkLogInAdmin();  // done
+                    break;
                 case 5:
-                    Hmi.printAllCustomer();
+                    Hmi.addToCart();
+                    break;
+                case 7:
+                    Hmi.printAllCustomer();  // done
+                    break;
+                case 8:
+                    Hmi.printAllAdmin();      // done
+                    break;
+                case 9:
+                    Hmi.displayCartInfo(); // not work
                     break;
             }
+
         }while(action  != 0);
     }
 
 
-
-//    private static void setDataUser(User user){
-//        Scanner scanner = new Scanner(System.in);
-//
-//        if(user instanceof Customer){
-//            System.out.println("Please enter customer user name");
-//            user.setUserName(scanner.next());
-//            System.out.println("Please enter customer email");
-//            user.setEmail(scanner.next());
-//            System.out.println("Please enter customer password");
-//            user.setPassword(scanner.next());
-//        }
-//        else{
-//            System.out.println("Please enter admin user name");
-//            user.setUserName(scanner.next());
-//            System.out.println("Please enter admin email");
-//            user.setEmail(scanner.next());
-//            System.out.println("Please enter admin password");
-//            user.setPassword(scanner.next());
-//        }
-//
-//    }
-
-//    private static void RegisterNewCustomer(Actions actions){
-//        Customer customer = new Customer();
-//        if(actions == Actions.CUSTOMER) {
-//            Hmi.setDataUser(customer);
-//            Hmi.storeService.addCustomer(customer);
-//        }
-//        else{
-//            Admin admin = (Admin) user;
-//            Hmi.setDataUser(admin);
-//            Hmi.storeService.addAdmin(admin);
-//        }
-//
-//    }
 
     private static void printAllCustomer(){
         for(Customer customer : Hmi.storeService.getStore().getCustomers()){
             System.out.println(customer.getData());
         }
     }
+
+    private static void printAllAdmin(){
+        for(Admin admin : Hmi.storeService.getStore().getAdmins()){
+            System.out.println(admin.getData());
+        }
+    }
+
     private static void addToCart(){
         Scanner scanner = new Scanner(System.in);
         String name;
@@ -100,37 +88,36 @@ public class Hmi { // to manage the system
         name = scanner.next();
         System.out.println("enter product price");
         price = scanner.nextDouble();
-//        System.out.println("enter product quantity");
-//        quantity = scanner.nextInt();
+        System.out.println("enter product quantity");
+        quantity = scanner.nextInt();
 
-        Products product = new Products(name, price);
+        Products product = new Products(name, price, quantity);
 
     }
 
+
     private static void displayAllProductsInCart(Customer customer){
-        for(CartItem item : Hmi.storeService.getStore().getProducts()){
-            if(item.getCustomer() == customer){
-                System.out.println("Product Name: " + item.getProduct().getName());
-                System.out.println("Product Price: " + item.getProduct().getPrice());
+        for(Products item : Hmi.storeService.getStore().getProducts()){
+            if(item.getCart().getCustomer() == customer){
+                System.out.println("Product Name: " + item.getName());
+                System.out.println("Product Price: " + item.getPrice());
                 System.out.println("Quantity: " + item.getQuantity());
-                System.out.println("Total Price: " + item.getTotalPrice());
+                System.out.println("Total Price: " + item.getCart().getTotalPrice());
                 System.out.println();
             }
         }
     }
 
-//    private static User findUserByName(Actions action){
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Please enter the name");
-//        String name = scanner.next();
-//        User user = null;
-//        if(action == Actions.CUSTOMER){
-//            user = Hmi.storeService.getCustomerByName(name);
-//        }
-//        else{
-//            user = Hmi.storeService.getCustomerByName(name);
-//        }
-//        return user;
-//    }
+
+    private static void displayCartInfo(){
+        Customer customer = Hmi.storeService.loginCustomer();
+        if(customer != null){
+            displayAllProductsInCart(customer);
+        }
+        else{
+            System.out.println("Invalid username or password");
+        }
+    }
+
 
 }

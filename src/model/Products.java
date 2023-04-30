@@ -4,6 +4,9 @@ public class Products {
     private String name;
     private String description;
     private double price;
+    private int quantity;
+    private Cart cart;
+
 
     public Products(String name, String description, double price) {
         this.name = name;
@@ -11,9 +14,10 @@ public class Products {
         this.price = price;
     }
 
-    public Products(String name, double price) {
+    public Products(String name, double price, int quantity) {
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -40,6 +44,20 @@ public class Products {
         this.price = price;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
 
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
 

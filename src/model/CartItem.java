@@ -20,7 +20,7 @@ public class CartItem {
     }
 
     public void setProduct(Products product) {
-        this.product = product;
+        this.product.add(product);
     }
 
     public int getQuantity() {
@@ -29,7 +29,7 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        this.totalPrice = product.getPrice() * quantity;
+//        this.totalPrice = product.getPrice() * quantity;
     }
 
     public Customer getCustomer() {
