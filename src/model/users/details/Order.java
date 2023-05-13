@@ -12,6 +12,7 @@ public class Order {
     /* data */
     private String orderId;         // Auto
     private String customerId;
+    private String customerName;
     private String orderDate;       // Auto
     private String orderStatus;
     private String paymentMethod;
@@ -28,9 +29,10 @@ public class Order {
         this.shippingInformation = new ShippingInformation();
     }
 
-    public Order(String customerId, String orderStatus, String paymentMethod, OrderDetails details, ShippingInformation info) {
+    public Order(String customerId, String customerName, String orderStatus, String paymentMethod, OrderDetails details, ShippingInformation info) {
         this.orderId = Utility.generateId("ORDER", ++s_TotalOrdersCount);
         this.customerId = customerId;
+        this.customerName = customerName;
         this.orderStatus = orderStatus;
         this.orderDate = currentDateAndTime();
         this.paymentMethod = paymentMethod;
@@ -66,6 +68,10 @@ public class Order {
         return this.customerId;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
     public String getOrderingDate() {
         return this.orderDate;
     }
@@ -90,6 +96,7 @@ public class Order {
         System.out.println("---------------------------------------- Order " + getOrderNumber() + " ----------------------------------------");
         System.out.println("Order ID: " + getOrderId());
         System.out.println("Customer ID: " + getCustomerId());
+        System.out.println("Customer Name: " + getCustomerName());
         System.out.println("Order Date: " + getOrderingDate());
         System.out.println("Order Status: " + getOrderStatus());
         System.out.println("Payment Method: " + getPaymentMethod());

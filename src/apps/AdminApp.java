@@ -59,36 +59,41 @@ public class AdminApp extends App
         // main loop
         while (getAppStatus())
         {
-            switch (getUserChoice())
+            if (getUserChoice().equals("1"))
             {
-                case "1":
-                    manageCategories();
-                    break;
-
-                case "2":
-                    manageProducts();
-                    break;
-
-                case "3":
-                    manageCustomers();
-                    break;
-
-                case "4":
-                    manageOrders();
-                    break;
-
-                case "5":
-                    personalInformation();
-                    break;
-
-                case "6":
-                    setAppStatus(false);
-                    break;
-
-                default:
-                    System.out.println("!! Invalid !!");
-                    break;
+                manageCategories();
             }
+
+            else if (getUserChoice().equals("2"))
+            {
+                manageProducts();
+            }
+
+            else if (getUserChoice().equals("3"))
+            {
+                manageCustomers();
+            }
+
+            else if (getUserChoice().equals("4"))
+            {
+                manageOrders();
+            }
+
+            else if (getUserChoice().equals("5"))
+            {
+                personalInformation();
+            }
+
+            else if (getUserChoice().equals("6"))
+            {
+                setAppStatus(false);
+                break;
+            }
+            else
+            {
+                Utility.printFormatedMessage("!! Invalid !!", false);
+            }
+
 
             // separator
             System.out.println(Utility.sep);

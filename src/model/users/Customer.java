@@ -38,6 +38,7 @@ public class Customer extends User {
         orders = new ArrayList<>();
     }
 
+
     public void setCart(Cart t_cart) {
         cart = t_cart;
     }

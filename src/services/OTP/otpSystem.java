@@ -74,6 +74,7 @@ public class otpSystem extends App
         // send otp to user
         emailManger.sendEmail(getRecipientEmail(), getRecipientUserName(), getSubject(), getBody());
 
+        Utility.printWelcomingMessage("!! Please check your email and confirm the OTP we've sent you !!");
         // ask user to get input
         String userOTP = Utility.getValidOTPFromUser();
 
@@ -87,7 +88,6 @@ public class otpSystem extends App
             }
 
             // done
-            System.out.println("!! Correct OTP !!");
             setAppStatus(false);
             break;
         }

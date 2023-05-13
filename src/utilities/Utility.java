@@ -13,9 +13,10 @@ public class Utility {
 
     public final static Map<String, String> CUSTOMER_APP_PROMPTS = Map.ofEntries(
             entry("Main", "1- Select a product\n2- Orders\n3- Cart\n4- Profile\n5- Log Out\n\nPlease enter a choice: "),
-            entry("Orders", "1- Display orders\n2- Cancel order\n3- Clear orders\n4- Back to previous menu\n\nPlease enter a choice: "),
+            entry("Orders", "1- Display orders\n2- Modify order\n3- Clear orders\n4- Back to previous menu\n\nPlease enter a choice: "),
             entry("Payment", "1- Loyalty points\n2- Ewallet\n3- On delivery\n4- Back to previous menu\n\nHow would you like to pay: "),
-            entry("Cart", "1- Display cart\n2- Remove item from cart\n3- CheckOut items\n4- ClearCart\n5- Back to previous menu\n\nPlease enter a choice: ")
+            entry("Cart", "1- Display cart\n2- Remove item from cart\n3- CheckOut items\n4- ClearCart\n5- Back to previous menu\n\nPlease enter a choice: "),
+            entry("ModifyOrders", "1- Cancel order\n2- Return order\n3- Remove order\n4- Back to previous menu\n\nPlease enter a choice: ")
     );
 
 
@@ -64,9 +65,7 @@ public class Utility {
     }
 
     public static boolean isValidAddress(String address) {
-        Pattern pattern = Pattern.compile("");
-        Matcher matcher = pattern.matcher(address);
-        return matcher.matches();
+        return true;
     }
 
     public static boolean isValidEmail(String  email)
@@ -172,7 +171,7 @@ public class Utility {
         System.out.print("address: ");
         address = scanner.nextLine();
 
-        while (!isValidName(address)) {
+        while (!isValidAddress(address)) {
             System.out.println("###########################");
             System.out.println("!! Invalid Address !!");
             System.out.println("###########################");

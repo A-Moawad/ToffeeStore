@@ -9,15 +9,18 @@ import model.users.Customer;
 import model.users.details.Order;
 import model.users.details.OrderDetails;
 import model.users.details.ShippingInformation;
+import services.OTP.otpSystem;
 import utilities.Utility;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class CustomerApp extends App
 {
+    private static Scanner scanner = new Scanner(System.in);
     private Customer customer;
     private CategoriesManger catManger;
 
@@ -33,7 +36,7 @@ public class CustomerApp extends App
         this.catManger = new CategoriesManger();
     }
 
-    public CustomerApp(Customer customer, CategoriesManger catManger, ArrayList<Order> orders)
+    public CustomerApp(Customer customer, ArrayList<Order> orders, CategoriesManger catManger)
     {
         super(true, Utility.CUSTOMER_APP_PROMPTS);
         this.customer = customer;
@@ -45,7 +48,8 @@ public class CustomerApp extends App
     public void run()
     {
         // welcome message
-        Utility.printWelcomingMessage("!! Welcome " + this.customer.getUserName() + " !!");
+        Utility.printWelcomingMessage("!! Welcome To Toffee Store !!");
+        scanner.nextLine();
 
         // display market
         catManger.displayAllCategories();
@@ -103,9 +107,6 @@ public class CustomerApp extends App
 
     public void selectProduct()
     {
-        // new scanner
-        Scanner scanner = new Scanner(System.in);
-
         // take category name
         Utility.printFormatedMessage("Category name: ", true);
         String categoryName = scanner.nextLine();
@@ -165,8 +166,171 @@ public class CustomerApp extends App
 
     private void orders()
     {
-        // code goes here
+        // check if orders is empty "note customer orders
+        if (this.customer.getCustomerOrders().isEmpty()) {
+            Utility.printFormatedMessage("!! You Haven't Placed Any Orders Yet !!", false);
+            scanner.nextLine();
+            return;
+        }
+
+        // sep
+        System.out.println(Utility.sep);
+
+        // display prompt
+        displayMenuAndTakeInputFromUser("Orders");
+
+        // menu loop
+        while (true)
+        {
+            if (getUserChoice().equals("1"))
+            {
+                // display customer all orders
+                if (this.customer.getCustomerOrders().isEmpty())
+                {
+                    // if empty display this message
+                    Utility.printFormatedMessage("!! No Orders To Display !!", false);
+                }
+                else
+                {
+                    // print all orders
+                    for(Order o: this.customer.getCustomerOrders())
+                    {
+                        o.print();
+                    }
+                }
+
+            }
+            else if (getUserChoice().equals("2"))
+            {
+                // Modify order
+                modifyOrder();
+            }
+            else if (getUserChoice().equals("3"))
+            {
+                // Clear orders
+                if(this.customer.getCustomerOrders().isEmpty())
+                {
+                    Utility.printFormatedMessage(" Already Empty !!", false);
+                }
+                else
+                {
+                    // clear orders
+                    this.customer.getCustomerOrders().clear();
+                    Utility.printFormatedMessage(" Cleared Successfully !!", false);
+                }
+            }
+
+            else if (getUserChoice().equals("4"))
+            {
+                break;
+            }
+            else
+            {
+                Utility.printFormatedMessage("!! Invalid !!", false);
+            }
+
+            // sep
+            System.out.println(Utility.sep);
+
+            // display prompt
+            displayMenuAndTakeInputFromUser("Orders");
+        }
+
     }
+
+    public void modifyOrder()
+    {
+        // scanner
+        Scanner scanner = new Scanner(System.in);
+
+        // alias for real order
+        Order order;
+        Order inOrders;
+
+        String orderId;
+        Utility.printFormatedMessage("Order Id you want to modify (e.g, FCAI-ORDER-1 ): ", true);
+        orderId = scanner.nextLine();
+
+        // check if valid order id
+        if (Utility.isValidOrderId(orderId))
+        {
+            // check if exists
+            Optional<Order> orderOptional = this.customer.getCustomerOrders().stream()
+                    .filter(o -> o.getOrderId().equals(orderId))
+                    .findFirst();
+            Optional<Order> orderInOrders = this.orders.stream()
+                    .filter(o -> o.getOrderId().equals(orderId))
+                    .findFirst();
+
+            // if exists
+            if (orderOptional.isPresent())
+            {
+                // alias
+                order = orderOptional.get();
+                inOrders =  orderInOrders.get();
+
+                // sep
+                System.out.println(Utility.sep);
+
+                // display prompt
+                displayMenuAndTakeInputFromUser("ModifyOrders");
+
+                // menu loop
+                while (true)
+                {
+                    if (getUserChoice().equals("1"))
+                    {
+                        // found then update its status
+                        order.SetOrderStatus("CANCELED");
+                        inOrders.SetOrderStatus("CANCELED");
+                        Utility.printFormatedMessage("!! Order Canceled Successfully !!", false);
+
+                    }
+                    else if (getUserChoice().equals("2"))
+                    {
+                        // found then update its status
+                        order.SetOrderStatus("RETURNED");
+                        inOrders.SetOrderStatus("RETURNED");
+                        Utility.printFormatedMessage("!! Done !!", false);
+
+                    }
+                    else if (getUserChoice().equals("3"))
+                    {
+                        // found then remove it
+                        this.customer.getCustomerOrders().remove(order);
+                        inOrders.SetOrderStatus("CANCELED");
+                        Utility.printFormatedMessage("!! Order Removed Successfully !!", false);
+                    }
+                    else if (getUserChoice().equals("4"))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Utility.printFormatedMessage("!! Invalid !!", false);
+                    }
+
+                    // sep
+                    System.out.println(Utility.sep);
+
+                    // display prompt
+                    displayMenuAndTakeInputFromUser("ModifyOrders");
+                }
+
+            }
+            else
+            {
+                System.out.println("!! Not In Orders !!");
+            }
+        }
+        else
+        {
+            Utility.printFormatedMessage("!! Not A Valid Order Id !!", false);
+        }
+
+
+    }
+
 
     private void cart()
     {
@@ -316,7 +480,7 @@ public class CustomerApp extends App
             // create order and place it
             OrderDetails orderDetails = new OrderDetails("", product.getM_productId(), product.getM_productName(), product.getM_availableAmount(), product.getM_productPrice(), (product.getM_productPrice()) * product.getM_availableAmount());
             ShippingInformation sh = new ShippingInformation(this.customer.getShippingInformation());
-            Order o = new Order(this.customer.getCustomerId(),"PROCESSING", paymentMethod, orderDetails, sh);
+            Order o = new Order(this.customer.getCustomerId(), this.customer.getUserName(), "PROCESSING", paymentMethod, orderDetails, sh);
             this.customer.placeAnOrder(o);
             this.orders.add(o);
         }
@@ -361,6 +525,10 @@ public class CustomerApp extends App
             {
                 // sep
                 System.out.println(Utility.sep);;
+
+                // to update financial you have to convert otp
+                otpSystem otpSystem = new otpSystem(customer.getEmail(), customer.getUserName());
+                otpSystem.run();
 
                 // display payemnt
                 this.customer.getPayment().print();
@@ -503,6 +671,7 @@ public class CustomerApp extends App
         }
         else if (updateChoice.equals("2"))
         {
+            System.out.println(Utility.sep);
             amount = Utility.getValidAmountOfNumberFromUser();
 
             // update it in user

@@ -2,6 +2,7 @@
   <library name="jar_files">
     <CLASSES>
       <root url="file://$USER_HOME$/Downloads/jar_files" />
+      <root url="jar://$USER_HOME$/Downloads/SpringEmailDemo/SpringEmailDemo/gradle/wrapper/gradle-wrapper.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,6 +1,8 @@
 package apps;
 
 import model.categoriesmanger.CategoriesManger;
+import model.categoriesmanger.Category;
+import model.payment.EWallet;
 import model.payment.Payment;
 import model.tool.Cart;
 import model.users.Admin;
@@ -71,14 +73,45 @@ public class ToffeeStore extends  App
     // init system with temp values
     private void Initialization()
     {
+        // init attributes
         this.storeAdmins = new ArrayList<Admin>();
         this.storeCustomers = new ArrayList<Customer>();
         this.storeOrders = new ArrayList<Order>();
         this.storeCatManger = new CategoriesManger();
 
-        // testing login admin
-        Admin admin = new Admin("fady kamal", "24221510", "01277157747", "popfadykamal151617@gmail.com", this.storeCatManger);
+        // customers
+        Customer c = new Customer("fady kamal", "20210282", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(10, new EWallet(500)), new ShippingInformation());
+        Customer c1 = new Customer("adham mahmoud", "657941", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(), new ShippingInformation());
+        Customer c2 = new Customer("mohamed kamal", "234", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(), new ShippingInformation());
+        Customer c3 = new Customer("ahmed kamal", "2341", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(), new ShippingInformation());
+
+        this.storeCustomers.add(c);
+        this.storeCustomers.add(c1);
+        this.storeCustomers.add(c2);
+        this.storeCustomers.add(c3);
+
+        // init addmins
+        Admin admin = new Admin("fady kamal", "20210282", "01277157747", "popfadykamal151617@gmail.com", this.storeCatManger);
         this.storeAdmins.add(admin);
+
+        // add init categories
+        Category cake = new Category("Cake");
+        cake.addProduct("Sponge Cake", "", 300, 20);
+        cake.addProduct("Cheese Cake", "", 250,  30);
+
+        // add init categories
+        Category chocolate = new Category("Chocolate");
+        chocolate.addProduct("Milk Chocolate", "", 60, 15);
+        chocolate.addProduct("White Chocolate", "", 70, 10);
+        chocolate.addProduct("Dark Chocolate", "", 50, 40);
+
+        // add them to catmanger
+        ArrayList<Category> categories = new ArrayList<Category>(2);
+        categories.add(cake);
+        categories.add(chocolate);
+
+        // init manger
+        this.storeCatManger = new CategoriesManger(categories);
     }
 
     private void loginAsAdmin()
@@ -125,16 +158,14 @@ public class ToffeeStore extends  App
         // if in customers: create admin app else print not an admin
         if (inCustomers(userName, password))
         {
-            // fetch him and start CutomerApp
-
-//            CustomerApp app = new CustomerApp(getCutomer(userName, password), storeCustomers, storeOrders, storeCatManger);
-//            app.run();
+            // fetch him and start CustomerApp
+            CustomerApp app = new CustomerApp(getCustomerByName(userName, password), storeOrders, storeCatManger);
+            app.run();
         }
         else
         {
             Utility.printFormatedMessage("!! Not An Customer !!", false);
         }
-
     }
 
     private void signUp()
@@ -209,7 +240,6 @@ public class ToffeeStore extends  App
             {
                 return true;
             }
-
         }
 
         return isAdmin;
@@ -222,7 +252,6 @@ public class ToffeeStore extends  App
             {
                 return admin;
             }
-
         }
 
         return new Admin();
@@ -239,7 +268,6 @@ public class ToffeeStore extends  App
             {
                 return true;
             }
-
         }
 
         return isCustomer;
@@ -253,7 +281,6 @@ public class ToffeeStore extends  App
             {
                 return customer;
             }
-
         }
 
         return new Customer();
