@@ -81,6 +81,7 @@ public class OrderDetails {
         System.out.println("ProductId: " + getProductId());
         System.out.println("ProductName: " + getProductName());
         System.out.println("Quantity: " + getOrderedQuantity() + "\n" + "Price per unit: " + getUnitPrice() + "$");
+        System.out.println("Total price: " + getTotalPrice() + "$");
     }
 
 }
