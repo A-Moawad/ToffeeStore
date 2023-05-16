@@ -342,12 +342,39 @@ public class Utility
     }
 
 
-
     public static void printWelcomingMessage(String s) {
         System.out.println(sep);
         System.out.println(s);
         System.out.println(sep);
     }
 
+    /**
+     * @brief This function takes a string and convert it into title case, for instance: (This Book Is Great).
+     * @param s String that will be converted into title case.
+     * @return  Converted string.
+     */
+    public static String convertToTitleCase(String input)
+    {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        StringBuilder titleCase = new StringBuilder(input.length());
+        boolean nextTitleCase = true;
+
+        for (char c : input.toCharArray()) {
+            if (Character.isSpaceChar(c)) {
+                nextTitleCase = true;
+            } else if (nextTitleCase) {
+                c = Character.toTitleCase(c);
+                nextTitleCase = false;
+            } else {
+                c = Character.toLowerCase(c);
+            }
+
+            titleCase.append(c);
+        }
+        return titleCase.toString();
+    }
 
 }
