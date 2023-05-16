@@ -99,10 +99,6 @@ public class CustomerApp extends App
 
     }
 
-    private void displayCustomerInformation()
-    {
-        this.customer.displayInfo();
-    }
 
     public void selectProduct()
     {
@@ -327,8 +323,6 @@ public class CustomerApp extends App
         {
             Utility.printFormatedMessage("!! Not A Valid Order Id !!", false);
         }
-
-
     }
 
 
@@ -424,7 +418,6 @@ public class CustomerApp extends App
                 {
                     placeOrder("LOYALTY_POINTS");
                     Utility.printFormatedMessage("!! Orders Placed Successfully !!", false);
-
                 }
                 else
                 {
@@ -440,7 +433,6 @@ public class CustomerApp extends App
                     // place order for each, and add orders
                     placeOrder("ELECTRONIC_WALLET");
                     Utility.printFormatedMessage("!! Orders Placed Successfully !!", false);
-
                 }
                 else
                 {
@@ -501,33 +493,22 @@ public class CustomerApp extends App
         String updatedChoice;
 
         // display menu
-        System.out.println("1- Display personal information");
-        System.out.println("2- Update personal information");
-        System.out.println("3- Update financials");
-        System.out.println("4- Update shipping information");
-        System.out.println("5- Back to previous menu");
-        System.out.print("\nPlease enter a choice: ");
-
-        // create scanner object
-        Scanner scanner = new Scanner(System.in);
-
-        // take value from user
-        updatedChoice = scanner.nextLine();
+        displayMenuAndTakeInputFromUser("PersonalInfo");
 
 
         // main loop
         while (true)
         {
-            if (updatedChoice.equals("1"))
+            if (getUserChoice().equals("1"))
             {
                 displayPersonalInformation();
             }
-            else if (updatedChoice.equals("2"))
+            else if (getUserChoice().equals("2"))
             {
                 // update
                 updatePersonalInformation();
             }
-            else if (updatedChoice.equals("3"))
+            else if (getUserChoice().equals("3"))
             {
 
                 // to update financial you have to convert otp
@@ -540,7 +521,7 @@ public class CustomerApp extends App
                 // update
                 updateFinancials();
             }
-            else if (updatedChoice.equals("4"))
+            else if (getUserChoice().equals("4"))
             {
                 // sep
                 System.out.println(Utility.sep);;
@@ -549,7 +530,7 @@ public class CustomerApp extends App
                 this.customer.getShippingInformation().print();
                 updateShippingInformation();
             }
-            else if (updatedChoice.equals("5"))
+            else if (getUserChoice().equals("5"))
             {
                break;
             }
@@ -562,15 +543,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // display menu
-            System.out.println("1- Display personal information");
-            System.out.println("2- Update personal information");
-            System.out.println("3- Update financials");
-            System.out.println("4- Update shipping information");
-            System.out.println("5- Back to previous menu");
-            System.out.print("\nPlease enter a choice: ");
-
-            // take value from user
-            updatedChoice = scanner.nextLine();
+            displayMenuAndTakeInputFromUser("PersonalInfo");
         }
     }
 
@@ -581,6 +554,7 @@ public class CustomerApp extends App
 
         // display sep
         System.out.println(Utility.sep);
+
 
         // display menu
         System.out.println("1- User name");
