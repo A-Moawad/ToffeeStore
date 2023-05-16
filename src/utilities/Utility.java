@@ -18,7 +18,8 @@ public class Utility
             entry("Payment", "1- Loyalty points\n2- Ewallet\n3- On delivery\n4- Back to previous menu\n\nHow would you like to pay: "),
             entry("Cart", "1- Display cart\n2- Remove item from cart\n3- CheckOut items\n4- ClearCart\n5- Back to previous menu\n\nPlease enter a choice: "),
             entry("ModifyOrders", "1- Cancel order\n2- Return order\n3- Remove order\n4- Back to previous menu\n\nPlease enter a choice: "),
-            entry("PersonalInfo",     "1- Display personal information\n2- Update personal information\n3- Update financials\n4- Update shipping information\n5- Back to previous menu\n\nPlease enter a choice: ")
+            entry("PersonalInfo", "1- Display personal information\n2- Update personal information\n3- Update financials\n4- Update shipping information\n5- Back to previous menu\n\nPlease enter a choice: "),
+            entry("personalUpdates","1- User name\n2- Phone number\n3- Email\n\nPlease select a choice to update: ")
     );
 
 

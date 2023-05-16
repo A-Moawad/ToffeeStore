@@ -557,19 +557,13 @@ public class CustomerApp extends App
 
 
         // display menu
-        System.out.println("1- User name");
-        System.out.println("2- Phone number");
-        System.out.println("3- Email");
-        System.out.print("\nPlease select a choice to update: ");
+        displayMenuAndTakeInputFromUser("personalUpdates");
 
-
-        // take value from user
-        String updateChoice = scanner.nextLine();
 
         // answer s
         String s;
 
-        if (updateChoice.equals("1"))
+        if (getUserChoice().equals("1"))
         {
             // sep
             System.out.println(Utility.sep);
@@ -582,7 +576,7 @@ public class CustomerApp extends App
 
             Utility.printFormatedMessage("!! Updated Username successfully !!", false);
         }
-        else if (updateChoice.equals("2"))
+        else if (getUserChoice().equals("2"))
         {
             // sep
             System.out.println(Utility.sep);
@@ -595,7 +589,7 @@ public class CustomerApp extends App
 
             Utility.printFormatedMessage("!! Updated Phone Number successfully !!", false);
         }
-        else if (updateChoice.equals("3"))
+        else if (getUserChoice().equals("3"))
         {
             // sep
             System.out.println(Utility.sep);
