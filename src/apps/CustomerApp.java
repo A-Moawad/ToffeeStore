@@ -1,7 +1,5 @@
 package apps;
 
-import enums.OrderStatus;
-import enums.PaymentMethods;
 import model.categoriesmanger.CategoriesManger;
 import model.categoriesmanger.Category;
 import model.categoriesmanger.Product;
@@ -60,32 +58,33 @@ public class CustomerApp extends App
         // main loop
         while (getAppStatus())
         {
-            switch (getUserChoice())
+            if (getUserChoice().equals("1"))
             {
-                case "1":
-                    selectProduct();
-                    break;
-
-                case "2":
-                    orders();
-                    break;
-
-                case "3":
-                    cart();
-                    break;
-
-                case "4":
-                    profile();
-                    break;
-
-                case "5":
-                    setAppStatus(false);
-                    break;
-
-                default:
-                    System.out.println("!! Invalid !!");
-                    break;
+                selectProduct();
             }
+            else if (getUserChoice().equals("2"))
+            {
+                orders();
+
+            }
+            else if (getUserChoice().equals("3"))
+            {
+                cart();
+            }
+            else if (getUserChoice().equals("4"))
+            {
+                profile();
+            }
+            else if (getUserChoice().equals("5"))
+            {
+                setAppStatus(false);
+                break;
+            }
+            else
+            {
+                System.out.println("!! Invalid !!");
+            }
+
 
             // separator
             System.out.println(Utility.sep);
@@ -112,7 +111,8 @@ public class CustomerApp extends App
         String categoryName = scanner.nextLine();
 
         // if exists display selected menu and complete, else print not exists and return
-        if (catManger.exists(categoryName)) {
+        if (catManger.exists(categoryName))
+        {
             // get it
             Category tmp = catManger.getCategoryByName(categoryName);
 
@@ -499,7 +499,7 @@ public class CustomerApp extends App
         // updated choice
         String updatedChoice;
 
-        // display menu
+        // display menugit
         System.out.println("1- Update personal information");
         System.out.println("2- Update financials");
         System.out.println("3- Update shipping information");
@@ -523,8 +523,6 @@ public class CustomerApp extends App
             }
             else if (updatedChoice.equals("2"))
             {
-                // sep
-                System.out.println(Utility.sep);;
 
                 // to update financial you have to convert otp
                 otpSystem otpSystem = new otpSystem(customer.getEmail(), customer.getUserName());
@@ -596,7 +594,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take user name
-            s = Utility.getValidNameFromUser();
+            s = Utility.getValidNameFromUser(true);
 
             // update it in user
             this.customer.setUserName(s);
@@ -609,7 +607,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take phone number
-            s = Utility.getValidPhoneNumber();
+            s = Utility.getValidPhoneNumber(true);
 
             // update it in user
             this.customer.setPhoneNumber(s);
@@ -622,7 +620,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take email
-            s = Utility.getValidEmailFromUser();
+            s = Utility.getValidEmailFromUser(true);
 
             // update it in user
             this.customer.setEmail(s);
@@ -717,7 +715,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take name from user
-            s = Utility.getValidNameFromUser();
+            s = Utility.getValidNameFromUser(true);
 
             // update it in user
             this.customer.getShippingInformation().setRecipientName(s);
@@ -729,7 +727,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take phoneNumber from user
-            s = Utility.getValidPhoneNumber();
+            s = Utility.getValidPhoneNumber(true);
 
             // update it in user
             this.customer.getShippingInformation().setRecipientPhoneNumber(s);
@@ -741,7 +739,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take email from user
-            s = Utility.getValidEmailFromUser();
+            s = Utility.getValidEmailFromUser(true);
 
             // update it in user
             this.customer.getShippingInformation().setEmail(s);
@@ -753,7 +751,7 @@ public class CustomerApp extends App
             System.out.println(Utility.sep);
 
             // take address from user
-            s = Utility.getValidAddressFromUser();
+            s = Utility.getValidAddressFromUser(true);
 
             // update it in user
             this.customer.getShippingInformation().setShippingAddress(s);

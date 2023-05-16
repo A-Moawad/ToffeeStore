@@ -7,20 +7,25 @@ import model.users.Admin;
 import model.users.Customer;
 import model.users.details.Order;
 import utilities.Utility;
-
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class AdminApp extends App
 {
+    /* static attributes */
+    private final Scanner scanner = new Scanner(System.in);
+
+    /* Instance attributes */
     private Admin admin;
-    private CategoriesManger catManger;
+
     private ArrayList<Customer> customers;
 
     private ArrayList<Order> orders;
+    private CategoriesManger catManger;
 
+
+    /* Constructors */
     public AdminApp()
     {
         // init parent
@@ -31,7 +36,6 @@ public class AdminApp extends App
         this.catManger = new CategoriesManger();
         this.customers = new ArrayList<Customer>();
         this.orders = new ArrayList<Order>();
-
     }
 
     public AdminApp(Admin admin, ArrayList<Customer> customers, ArrayList<Order> orders, CategoriesManger categoriesManger)
@@ -44,14 +48,46 @@ public class AdminApp extends App
         this.orders = orders;
     }
 
+    /* Setters & Getters (encapsulation) */
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public void setCustomers(ArrayList<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public void setOrders(ArrayList<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void setCatManger(CategoriesManger catManger) {
+        this.catManger = catManger;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
+
+    public ArrayList<Order> getOrders() {
+        return orders;
+    }
+
+    public CategoriesManger getCatManger() {
+        return catManger;
+    }
+
+    /* Instance Methods */
     @Override
     public void run()
     {
         // welcome message
         Utility.printWelcomingMessage("!! Welcome " + this.admin.getUserName() + " !!");
-
-        // scanner
-        Scanner scan = new Scanner(System.in);
 
         // display menu and take input from user
         displayMenuAndTakeInputFromUser("Main");
@@ -94,22 +130,17 @@ public class AdminApp extends App
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-
             // separator
             System.out.println(Utility.sep);
 
             // display menu and take input from user
             displayMenuAndTakeInputFromUser("Main");
-
         }
     }
 
 
     private void manageCategories()
     {
-        // scanner
-        Scanner scan = new Scanner(System.in);
-
         // sep
         System.out.println(Utility.sep);
 
@@ -131,7 +162,8 @@ public class AdminApp extends App
                     // print message
                     Utility.printFormatedMessage("!! No Categories !!", false);
                 }
-            } else if (getUserChoice().equals("2")) {
+            }
+            else if (getUserChoice().equals("2")) {
                 // add new category
                 // separator
                 System.out.println(Utility.sep);
@@ -139,7 +171,7 @@ public class AdminApp extends App
                 // take category name from user
                 String catName;
                 System.out.print("Category name: ");
-                catName = scan.nextLine();
+                catName = scanner.nextLine();
 
                 // check if already exists
                 if (catManger.exists(catName))
@@ -165,7 +197,7 @@ public class AdminApp extends App
                 // take category name to delete
                 String catName;
                 System.out.print("Category name: ");
-                catName = scan.nextLine();
+                catName = scanner.nextLine();
 
                 // check if exists
                 if (catManger.exists(catName))
@@ -202,7 +234,6 @@ public class AdminApp extends App
             }
             else if (getUserChoice().equals("5"))
             {
-                System.out.println(getUserChoice());
                 break;
             }
             else
@@ -221,8 +252,6 @@ public class AdminApp extends App
 
     public void manageProducts()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
         // display sep
         System.out.println(Utility.sep);
 
@@ -230,56 +259,57 @@ public class AdminApp extends App
         displayMenuAndTakeInputFromUser("ModifyProducts");
 
         // main loop
-        while (true) {
+        while (true)
+        {
+
             if (getUserChoice().equals("1"))
             {
-                // add new product
+                System.out.println(Utility.sep);
                 String productName, category, description;
                 double pricePerUnit;
                 int availableAmount;
 
                 // take name
-                System.out.println(Utility.sep);
-                System.out.print("Product name: ");
-                productName = scanner.nextLine();
+                productName = Utility.getValidProductNameFromUser(false);
 
                 // take description
-                System.out.println(Utility.sep);
                 System.out.print("Product description (in one line): ");
                 description = scanner.nextLine();
 
                 // take price per unit
-                System.out.println(Utility.sep);
-                System.out.print("Price per unit: ");
-                pricePerUnit = scanner.nextDouble();
+                pricePerUnit = Utility.getValidPrice(false);
 
                 // take amount
-                System.out.println(Utility.sep);
                 System.out.print("Available amount: ");
-                availableAmount = scanner.nextInt();
+                availableAmount = (int) Utility.getValidAmountOfNumberFromUser();
                 scanner.nextLine();
 
-                // category to add new product to
-                System.out.println(Utility.sep);
-                System.out.print("Category ( if category doesn't exist it will be created implicitly ): ");
-                category = scanner.nextLine();
-
                 // create product
+                category = scanner.nextLine();
                 Product product = new Product(productName, category, description, pricePerUnit, availableAmount);
 
+                // category to add new product to
+                System.out.print("Category ( if category doesn't exist it will be created implicitly ): ");
+
+
                 // check if cat exists
-                if (catManger.exists(category)) {
+                if (catManger.exists(category))
+                {
                     // check if there is already such product
                     if (catManger.getCategoryByName(category).exists(productName)) {
                         Utility.printFormatedMessage("!! Already Exists !!", false);
-                    } else {
+                    }
+                    else
+                    {
                         // added to category
                         catManger.getCategoryByName(category).addProduct(product);
 
                         // confirming message
                         Utility.printFormatedMessage("!! Added Successfully !!", false);
                     }
-                } else {
+                }
+                else
+                {
                     // create product and add it to this category
                     ArrayList<Product> products = new ArrayList<>();
                     products.add(product);
@@ -292,15 +322,14 @@ public class AdminApp extends App
             }
             else if (getUserChoice().equals("2"))
             {
+
                 // delete product
+                // take cat name to delete
                 // sep
                 System.out.println(Utility.sep);
-
-                // take cat name to delete
                 String productName;
                 System.out.print("Product name: ");
                 productName = scanner.nextLine();
-
 
 
                 // get it
@@ -319,7 +348,9 @@ public class AdminApp extends App
             }
             else if (getUserChoice().equals("3"))
             {
-
+                // sep
+                System.out.println(Utility.sep);
+                updateProduct();
             }
             else if (getUserChoice().equals("4"))
             {
@@ -352,8 +383,6 @@ public class AdminApp extends App
 
     void manageCustomers()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
         // display sep
         System.out.println(Utility.sep);
 
@@ -421,7 +450,6 @@ public class AdminApp extends App
                 {
                     customers.clear();
                     Utility.printFormatedMessage("!! Cleared Successfully !!", false);
-
                 }
 
             }
@@ -463,7 +491,6 @@ public class AdminApp extends App
                 if (orders.isEmpty())
                 {
                     Utility.printFormatedMessage("!! No Orders !!", false);
-
                 }
                 else
                 {
@@ -542,9 +569,6 @@ public class AdminApp extends App
 
     private void personalInformation()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
-
         // sep
         System.out.println(Utility.sep);
 
@@ -560,7 +584,7 @@ public class AdminApp extends App
             }
             else if (getUserChoice().equals("2"))
             {
-
+                updatePersonalInformation();
             }
             else if (getUserChoice().equals("3"))
             {
@@ -581,5 +605,220 @@ public class AdminApp extends App
 
 
     ///////////////////////////////// Helper Methods ////////////////////////////////
+    private void updateProduct()
+    {
+        // category name
+        String categoryName;
+
+        // get valid category name from user
+        categoryName = Utility.getValidCategoryNameFromUser(false);
+
+        // flag
+        boolean updated = false;
+
+        if (catManger.exists(categoryName))
+        {
+            // get category
+            Category fetchedCat = catManger.getCategoryByName(categoryName);
+
+            // print category
+            fetchedCat.displayAllProducts();
+
+            // sep
+            System.out.println(Utility.sep);
+
+            // take product name
+            String productName = Utility.getValidProductNameFromUser(false);
+
+            if (fetchedCat.exists(productName))
+            {
+                // fetch product to update it
+                Product fetchedProduct = fetchedCat.getProductByName(productName);
+
+                // print product
+                fetchedProduct.print();
+
+
+                // call method update product
+                updateValidatedProduct(fetchedProduct);
+
+            }
+            else
+            {
+                // print product doesn't exists
+                Utility.printFormatedMessage("!! Doesn't Exist !!", false);
+            }
+        }
+        else
+        {
+            Utility.printFormatedMessage(" !! Doesn't Exist !!", false);
+
+        }
+
+    }
+
+
+    private void updateValidatedProduct(Product product)
+    {
+        // sep
+        System.out.println(Utility.sep);
+
+        // display menu
+        displayMenuAndTakeInputFromUser("ProductUpdates");
+
+        // bool flag updated
+        boolean updated = false;
+
+        // sep before each
+        while (true)
+        {
+            if (getUserChoice().equals("1"))
+            {
+                /* update product name */
+
+                // sep
+                System.out.println(Utility.sep);
+
+                // take new name from user
+                String newName = Utility.getValidProductNameFromUser(true);
+
+                // update product name
+                product.setM_productName(newName);
+
+                // set flag
+                updated = true;
+            }
+            else if (getUserChoice().equals("2"))
+            {
+                // update product description
+                String desc = scanner.nextLine();
+
+                // update product description
+                product.setM_productDescription(desc);
+
+                // set flag
+                updated = true;
+            }
+            else if (getUserChoice().equals("3"))
+            {
+                // update a product available quantity
+                double amount = Utility.getValidAmountOfNumberFromUser();
+
+                // update it
+                product.setM_availableAmount((int)amount);
+
+                // set flag
+                updated = true;
+            }
+            else if (getUserChoice().equals("4"))
+            {
+                // update product unit price
+                double newPrice = Utility.getValidPrice(true);
+
+                // set it
+                product.setM_productPrice(newPrice);
+
+                // set flag
+                updated = true;
+            }
+            else if (getUserChoice().equals("5"))
+            {
+                // back to previous menu
+                break;
+            }
+            else
+            {
+                // print invalid choice
+                Utility.printFormatedMessage("!! Invalid !!", false);
+            }
+
+
+            if (updated)
+            {
+                // print convfirming message
+                Utility.printFormatedMessage("!! Product Updated Successfully !!", false);
+
+                // break
+                break;
+            }
+            else
+            {
+                // call function again
+                updateValidatedProduct(product);
+            }
+        }
+    }
+
+
+    private void updatePersonalInformation()
+    {
+        // sep
+        System.out.println(Utility.sep);
+
+        // display proper prompt and take option from user
+        displayMenuAndTakeInputFromUser("UpdateAdminInformation");
+
+        // value which data has been updated
+        boolean isUpdated = false;
+
+        while (true)
+        {
+            // sep
+            System.out.println(Utility.sep);
+
+            if (getUserChoice().equals("1"))
+            {
+                // update name
+                String newName = Utility.getValidNameFromUser(true);
+                this.admin.setUserName(newName);
+
+                // set updated flag
+                isUpdated = true;
+            }
+            else if (getUserChoice().equals("2"))
+            {
+                // phone number
+                String newPhoneNumber = Utility.getValidPhoneNumber(true);
+                this.admin.setPhoneNumber(newPhoneNumber);
+
+                // set updated flag
+                isUpdated = true;
+            }
+            else if (getUserChoice().equals("3"))
+            {
+                // update email
+                String newEmail = Utility.getValidEmailFromUser(true);
+                this.admin.setEmail(newEmail);
+
+                // set updated flag
+                isUpdated = true;
+            }
+            else if (getUserChoice().equals("4"))
+            {
+                // back to prev menu
+                break;
+            }
+            else
+            {
+                System.out.println("!! Invalid !!");
+            }
+
+            if(isUpdated)
+            {
+                // confirming message
+                Utility.printFormatedMessage("!! Updated Successfully !!", false);
+
+                // back to pre menu
+                break;
+            }
+            else
+            {
+                // rerun the function
+                updatePersonalInformation();
+            }
+        }
+    }
+
+
 
 }

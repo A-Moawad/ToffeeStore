@@ -5,7 +5,8 @@ import java.util.Scanner;
 import java.util.regex.*;
 import static java.util.Map.entry;
 
-public class Utility {
+public class Utility
+{
     public  static String generateId(String objectType, int objectCount)
     {
         return ("FCAI-" + objectType.toUpperCase() + "-" + objectCount);
@@ -26,7 +27,9 @@ public class Utility {
             entry("ModifyProducts", "1- Add new product to certain category\n2- Delete product\n3- Update product\n4- Clear all products\n5- Back to previous menu\n\nPlease enter a choice: "),
             entry("ModifyOrders", "1- Display all orders\n2- Change status of order\n3- Delete order\n4- Clear all orders\n5- Back to previous menu\n\nPlease enter a choice: "),
             entry("ModifyCustomers", "1- Display all customers\n2- Delete a customer\n3- Clear all customers\n4- Back to previous menu\n\nPlease enter a choice: "),
-            entry("PersonalInfo", "1- Display personal information \n2- Update Information\n3- Back to previous menu\n\nPlease enter a choice: ")
+            entry("PersonalInfo", "1- Display personal information \n2- Update Information\n3- Back to previous menu\n\nPlease enter a choice: "),
+            entry("UpdateAdminInformation", "1- User name \n2- Phone number\n3- Email\n4- Back to previous menu\n\nPlease enter a choice: "),
+            entry("ProductUpdates", "1- Product name \n2- Product description\n3- Product available amount\n4- Product price\n5- Back to previous menu\n\nPlease enter a choice: ")
     );
 
     public final static Map<String, String> TOFFEE_STORE_PROMPTS = Map.ofEntries(
@@ -94,20 +97,28 @@ public class Utility {
         return matcher.matches();
     }
 
-    public static boolean isValidOTP(String otp) {
+    public static boolean isValidOTP(String otp)
+    {
         Pattern pattern = Pattern.compile("^\\d{10}$");
         Matcher matcher = pattern.matcher(otp);
         return matcher.matches();
     }
 
+    public static boolean isValidPrice(String price)
+    {
+        Pattern pattern = Pattern.compile("^\\d+\\.?\\d+$");
+        Matcher matcher = pattern.matcher(price);
+        return matcher.matches();
+    }
+
 
     /////////////////////////////////////////////////////// Takers //////////////////////////////////////////
-    public static String getValidNameFromUser() {
+    public static String getValidNameFromUser(boolean forRenewal) {
         Scanner scanner = new Scanner(System.in);
         String name;
 
         // take input from user
-        System.out.print("user name: ");
+        System.out.print((forRenewal)?"New user name: ":"User name: ");
         name = scanner.nextLine();
 
         while (!isValidName(name)) {
@@ -121,13 +132,13 @@ public class Utility {
 
         return name;
     }
-    public static String getValidEmailFromUser()
+    public static String getValidEmailFromUser(boolean forRenewal)
     {
         Scanner scanner = new Scanner(System.in);
         String email;
 
         // take input from user
-        System.out.print("email: ");
+        System.out.print((forRenewal)?"New email: ": "Email: ");
         email = scanner.nextLine();
 
         while (!isValidEmail(email)) {
@@ -142,13 +153,13 @@ public class Utility {
         return email;
     }
 
-    public static String getValidPhoneNumber()
+    public static String getValidPhoneNumber(boolean forRenewal)
     {
         Scanner scanner = new Scanner(System.in);
         String phoneNumber;
 
         // take input from user
-        System.out.print("phone number: ");
+        System.out.print((forRenewal)?"New phone number: " :"Phone number: ");
         phoneNumber = scanner.nextLine();
 
         while (!isValidPhoneNumber(phoneNumber)) {
@@ -162,13 +173,36 @@ public class Utility {
 
         return phoneNumber;
     }
-    public static String getValidAddressFromUser()
+
+    public static double getValidPrice(boolean forRenewal)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String price;
+
+        // take input from user
+
+        System.out.print((forRenewal)?"New price: ": "Price per unit: ");
+
+        price = scanner.nextLine();
+
+        while (!isValidPrice(price)) {
+            System.out.println("###########################");
+            System.out.println("!! Invalid Price !!");
+            System.out.println("###########################");
+
+            System.out.print("Please Enter A Valid Price (e.g, 45.5) : ");
+            price = scanner.nextLine();
+        }
+
+        return Double.parseDouble(price);
+    }
+    public static String getValidAddressFromUser(boolean forRenewal)
     {
         Scanner scanner = new Scanner(System.in);
         String address;
 
         // take input from user
-        System.out.print("address: ");
+        System.out.print((forRenewal)? "New address: ":"Address: ");
         address = scanner.nextLine();
 
         while (!isValidAddress(address)) {
@@ -215,7 +249,7 @@ public class Utility {
         while (password.isEmpty())
         {
             System.out.println("###########################");
-            System.out.println("!! Invalid !!");
+            System.out.println("!! Invalid Password !!");
             System.out.println("###########################");
 
             System.out.print("Please Enter A Password : ");
@@ -264,6 +298,47 @@ public class Utility {
             otp = scanner.nextLine();
         }
         return otp;
+    }
+
+    public static String getValidCategoryNameFromUser(boolean forRenewal)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String category;
+
+        // take input from user
+        System.out.print((forRenewal)?"New name: ":"Category: ");
+        category = scanner.nextLine();
+
+        while (!isValidName(category))
+        {
+            System.out.println("###########################");
+            System.out.println("!! Invalid Name !!");
+            System.out.println("###########################");
+
+            System.out.print("Please Enter A Valid Category (e.g, Dairy): ");
+            category = scanner.nextLine();
+        }
+        return category;
+    }
+    public static String getValidProductNameFromUser(boolean forRenewal)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String Product;
+
+        // take input from user
+        System.out.print((forRenewal)?"New name: ":"Product name: ");
+        Product = scanner.nextLine();
+
+        while (!isValidName(Product))
+        {
+            System.out.println("###########################");
+            System.out.println("!! Invalid Name !!");
+            System.out.println("###########################");
+
+            System.out.print("Please Enter A Valid Product (e.g, Milk chocolate): ");
+            Product = scanner.nextLine();
+        }
+        return Product;
     }
 
 

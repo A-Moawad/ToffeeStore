@@ -120,7 +120,7 @@ public class ToffeeStore extends  App
         System.out.println(Utility.sep);
 
         // take valid user name
-        String userName = Utility.getValidNameFromUser();
+        String userName = Utility.getValidNameFromUser(false);
 
         // sep
         System.out.println(Utility.sep);
@@ -147,7 +147,7 @@ public class ToffeeStore extends  App
         System.out.println(Utility.sep);
 
         // take valid user name
-        String userName = Utility.getValidNameFromUser();
+        String userName = Utility.getValidNameFromUser(false);
 
         // sep
         System.out.println(Utility.sep);
@@ -174,7 +174,7 @@ public class ToffeeStore extends  App
         System.out.println(Utility.sep);
 
         // take valid user name
-        String userName = Utility.getValidNameFromUser();
+        String userName = Utility.getValidNameFromUser(false);
 
         // sep
         System.out.println(Utility.sep);
@@ -193,19 +193,19 @@ public class ToffeeStore extends  App
         System.out.println(Utility.sep);
 
         // take email
-        String email = Utility.getValidEmailFromUser();
+        String email = Utility.getValidEmailFromUser(false);
 
         // sep
         System.out.println(Utility.sep);
 
         // take phoneNumber
-        String phoneNumber = Utility.getValidPhoneNumber();
+        String phoneNumber = Utility.getValidPhoneNumber(false);
 
         // sep
         System.out.println(Utility.sep);
 
         // take address
-        String address = Utility.getValidAddressFromUser();
+        String address = Utility.getValidAddressFromUser(false);
 
         // sep
         System.out.println(Utility.sep);

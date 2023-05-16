@@ -10,11 +10,11 @@ public class User {
 
     public User() {}
 
-    public User(String t_name, String t_password, String t_email, String t_phoneNumber) {
+    public User(String t_name, String t_password, String t_phoneNumber, String t_email) {
         userName = t_name;
         password = t_password;
-        email = t_email;
         phoneNumber = t_phoneNumber;
+        email = t_email;
     }
 
     public void setUserName(String t_name) {
