@@ -29,7 +29,7 @@ public class Customer extends User {
     public Customer(String t_name, String t_password, String t_email, String t_phoneNumber, Cart t_cart,
                     Payment t_payment, ShippingInformation t_info)
     {
-        super(t_name, t_password, t_email, t_phoneNumber);
+        super(t_name, t_password, t_phoneNumber, t_email);
 
         customerId = Utility.generateId("CUSTOMER", ++s_totalCountOfCusotmers);
         cart = t_cart;
