@@ -80,7 +80,7 @@ public class Customer extends User {
 
     public void displayInfo() {
         // print id
-        System.out.println("-----------------------------------------" + getUserName() + " Information ----------------------------------------");
+        System.out.println("----------------------------------------- " + Utility.convertToTitleCase(getUserName()) + " Information ----------------------------------------");
         System.out.println("Id: " + getCustomerId());
 
         // print User details

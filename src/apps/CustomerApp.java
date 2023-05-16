@@ -487,8 +487,9 @@ public class CustomerApp extends App
         // clear cart
         this.customer.getCart().clear();
     }
-    private void displayPersonalInformation() {
-        // code goes here
+    private void displayPersonalInformation()
+    {
+        this.customer.displayInfo();
     }
 
     private void profile()
@@ -500,10 +501,11 @@ public class CustomerApp extends App
         String updatedChoice;
 
         // display menu
-        System.out.println("1- Update personal information");
-        System.out.println("2- Update financials");
-        System.out.println("3- Update shipping information");
-        System.out.println("4- Back to previous menu");
+        System.out.println("1- Display personal information");
+        System.out.println("2- Update personal information");
+        System.out.println("3- Update financials");
+        System.out.println("4- Update shipping information");
+        System.out.println("5- Back to previous menu");
         System.out.print("\nPlease enter a choice: ");
 
         // create scanner object
@@ -518,10 +520,14 @@ public class CustomerApp extends App
         {
             if (updatedChoice.equals("1"))
             {
+                displayPersonalInformation();
+            }
+            else if (updatedChoice.equals("2"))
+            {
                 // update
                 updatePersonalInformation();
             }
-            else if (updatedChoice.equals("2"))
+            else if (updatedChoice.equals("3"))
             {
 
                 // to update financial you have to convert otp
@@ -534,7 +540,7 @@ public class CustomerApp extends App
                 // update
                 updateFinancials();
             }
-            else if (updatedChoice.equals("3"))
+            else if (updatedChoice.equals("4"))
             {
                 // sep
                 System.out.println(Utility.sep);;
@@ -543,7 +549,7 @@ public class CustomerApp extends App
                 this.customer.getShippingInformation().print();
                 updateShippingInformation();
             }
-            else if (updatedChoice.equals("4"))
+            else if (updatedChoice.equals("5"))
             {
                break;
             }
@@ -554,13 +560,14 @@ public class CustomerApp extends App
 
             // sep
             System.out.println(Utility.sep);
-            // display menu
-            System.out.println("1- Update personal information");
-            System.out.println("2- Update financials");
-            System.out.println("3- Update shipping information");
-            System.out.println("4- Back to previous menu ");
-            System.out.print("\nPlease enter a choice: ");
 
+            // display menu
+            System.out.println("1- Display personal information");
+            System.out.println("2- Update personal information");
+            System.out.println("3- Update financials");
+            System.out.println("4- Update shipping information");
+            System.out.println("5- Back to previous menu");
+            System.out.print("\nPlease enter a choice: ");
 
             // take value from user
             updatedChoice = scanner.nextLine();
