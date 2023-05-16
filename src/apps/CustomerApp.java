@@ -499,7 +499,7 @@ public class CustomerApp extends App
         // updated choice
         String updatedChoice;
 
-        // display menugit
+        // display menu
         System.out.println("1- Update personal information");
         System.out.println("2- Update financials");
         System.out.println("3- Update shipping information");
