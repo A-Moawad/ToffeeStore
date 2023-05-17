@@ -18,7 +18,6 @@ import static java.lang.Thread.sleep;
 
 public class CustomerApp extends App
 {
-    private static Scanner scanner = new Scanner(System.in);
     private Customer customer;
     private CategoriesManger catManger;
 
@@ -100,7 +99,7 @@ public class CustomerApp extends App
     }
 
 
-    public void selectProduct()
+    private void selectProduct()
     {
         // take category name
         Utility.printFormatedMessage("Category name: ", true);
@@ -231,14 +230,10 @@ public class CustomerApp extends App
             // display prompt
             displayMenuAndTakeInputFromUser("Orders");
         }
-
     }
 
     public void modifyOrder()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
-
         // alias for real order
         Order order;
         Order inOrders;
@@ -312,7 +307,6 @@ public class CustomerApp extends App
                     // display prompt
                     displayMenuAndTakeInputFromUser("ModifyOrders");
                 }
-
             }
             else
             {
@@ -331,7 +325,7 @@ public class CustomerApp extends App
         // check if cart empty
         if (this.customer.getCart().isEmpty()) {
             Utility.printFormatedMessage("!! Cart Is Empty !!", false);
-            new Scanner(System.in).nextLine();
+            scanner.nextLine();
             return;
         }
 
@@ -354,7 +348,7 @@ public class CustomerApp extends App
                 // take product name and remove it
                 String productName;
                 Utility.printFormatedMessage("product you want to remove: ", true);
-                productName = new Scanner(System.in).nextLine();
+                productName = scanner.nextLine();
 
                 // check if product in cart
                 if (this.customer.getCart().exists(productName).getKey())
@@ -547,11 +541,8 @@ public class CustomerApp extends App
         }
     }
 
-    public void updatePersonalInformation()
+    private void updatePersonalInformation()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
-
         // display sep
         System.out.println(Utility.sep);
 
@@ -608,11 +599,8 @@ public class CustomerApp extends App
         }
     }
 
-    public void updateFinancials()
+    private void updateFinancials()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
-
         // display sep
         System.out.println(Utility.sep);
 
@@ -658,11 +646,9 @@ public class CustomerApp extends App
         }
     }
 
-    public void updateShippingInformation()
+    private void updateShippingInformation()
     {
-        // scanner
-        Scanner scanner = new Scanner(System.in);
-        // display sep
+        // sep
         System.out.println(Utility.sep);
 
         System.out.println("1- Recipient name");

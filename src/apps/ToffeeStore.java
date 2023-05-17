@@ -13,7 +13,9 @@ import services.OTP.otpSystem;
 import utilities.Utility;
 import java.util.ArrayList;
 
-
+/**
+ * This class simulates ToffeeStore properties and methods<br>Extends App class.
+ */
 public class ToffeeStore extends  App
 {
 
@@ -23,6 +25,9 @@ public class ToffeeStore extends  App
     private CategoriesManger storeCatManger;
     private ArrayList<Order> storeOrders;
 
+    /**
+     * Default constructor of ToffeeStore<br>note: It initializes instance attributes via initialization function.
+     */
     public ToffeeStore()
     {
         super(true, Utility.TOFFEE_STORE_PROMPTS);
@@ -70,7 +75,10 @@ public class ToffeeStore extends  App
         }
     }
 
-    // init system with temp values
+    /**
+     * Initializes store with hard coded values<br>Works as replacement for database<br>Called in ToffeeStore constructor.
+     * @see ToffeeStore
+     */
     private void Initialization()
     {
         // init attributes
@@ -80,7 +88,7 @@ public class ToffeeStore extends  App
         this.storeCatManger = new CategoriesManger();
 
         // customers
-        Customer c = new Customer("fady kamal", "20210282", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(10, new EWallet(500)), new ShippingInformation());
+        Customer c = new Customer("fady kamal", "20210282", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(10, new EWallet(500)), new ShippingInformation("fady kamal", "01220680646", "popfadykamal151617@gmail.com", "Cairo", ""));
         Customer c1 = new Customer("adham mahmoud", "657941", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(), new ShippingInformation());
         Customer c2 = new Customer("mohamed kamal", "234", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(), new ShippingInformation());
         Customer c3 = new Customer("ahmed kamal", "2341", "popfadykamal151617@gmail.com", "01277157747", new Cart(), new Payment(), new ShippingInformation());
@@ -114,6 +122,13 @@ public class ToffeeStore extends  App
         this.storeCatManger = new CategoriesManger(categories);
     }
 
+    /**
+     *  This function takes login credentials (username, password) from user and logs him in as admin.
+     *  User won't be able to log in unless he enters a valid name and password, and exists in system admins.
+     *  When user got validated as an admin it instantiates an instance from admin app and runs it with.
+     * @see Admin
+     * @see AdminApp
+     */
     private void loginAsAdmin()
     {
         // sep
@@ -141,6 +156,14 @@ public class ToffeeStore extends  App
         }
     }
 
+
+    /**
+     *  This function takes login credentials (username, password) from user and logs him in as customer.
+     *  User won't be able to log in unless he enters a valid name and password, and exists in system customers.
+     *  When user got validated as a customers it fetches that customer from the system and instantiates an instance from Customer app, thereafter runs the system.
+     * @see Customer
+     * @see CustomerApp
+     */
     private void loginAsCustomer()
     {
         // sep
@@ -168,6 +191,13 @@ public class ToffeeStore extends  App
         }
     }
 
+    /**
+     * This function add new customers to the system.
+     * As soon as user enters his username and password, system checks whether he already exists or not, unless user exists system sends him otp using preEntered email<br>
+     * After user confirms OTP, system register him into system customers.
+     * @see otpSystem
+     * @see Customer
+     */
     private void signUp()
     {
         // sep
@@ -228,6 +258,12 @@ public class ToffeeStore extends  App
         Utility.printFormatedMessage("!!  You have successfully signed up !! ", false);
     }
 
+    /**
+     * This function takes an admin credentials (username, password) and check whether he exists in system admins or not
+     * @param userName Logger username
+     * @param password Logger password
+     * @return true if admin in database, else return false.
+     */
     private boolean inAdmins(String userName, String password)
     {
         // flag
@@ -244,7 +280,7 @@ public class ToffeeStore extends  App
 
         return isAdmin;
     }
-    public Admin getAdminByName(String userName, String password)
+    private Admin getAdminByName(String userName, String password)
     {
         for(Admin admin: this.storeAdmins)
         {
@@ -285,5 +321,4 @@ public class ToffeeStore extends  App
 
         return new Customer();
     }
-
 }

@@ -13,9 +13,6 @@ import java.util.Scanner;
 
 public class AdminApp extends App
 {
-    /* static attributes */
-    private final Scanner scanner = new Scanner(System.in);
-
     /* Instance attributes */
     private Admin admin;
 

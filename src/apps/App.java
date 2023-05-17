@@ -3,10 +3,13 @@ package apps;
 import java.util.Map;
 import java.util.Scanner;
 
-public abstract class App {
-    private boolean appRunning;
-    private String choice;
-    private Map<String, String> prompts;
+public abstract class App
+{
+    protected final Scanner scanner = new Scanner(System.in);
+
+    protected boolean appRunning;
+    protected String choice;
+    protected Map<String, String> prompts;
 
     public App()
     {
