@@ -4,7 +4,7 @@ import model.categoriesmanger.CategoriesManger;
 import utilities.Utility;
 
 /**
- * This class simulates admin properties and methods<br>Extends from user
+ * This class simulates the admin properties and methods<br>Extends from user.
  */
 public class Admin extends User
 {

@@ -9,13 +9,15 @@ import model.users.details.OrderDetails;
 import model.users.details.ShippingInformation;
 import services.OTP.otpSystem;
 import utilities.Utility;
-
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
-import static java.lang.Thread.sleep;
 
+/**
+ * The CustomerApp class represents the customer application for the Toffee Store.
+ * It allows customers to select products, place orders, manage their cart, and update their personal information.
+ */
 public class CustomerApp extends App
 {
     private Customer customer;
@@ -23,6 +25,10 @@ public class CustomerApp extends App
 
     private ArrayList<Order> orders;
 
+    /**
+     * Initializes a new instance of the CustomerApp class with default values.
+     * Sets the parent status to true and initializes customer and category manager objects.
+     */
     public CustomerApp()
     {
         // init parent with true status as init and proper prompts
@@ -33,6 +39,14 @@ public class CustomerApp extends App
         this.catManger = new CategoriesManger();
     }
 
+    /**
+     * Initializes a new instance of the CustomerApp class with the provided parameters.
+     * Sets the parent status to true and initializes customer, orders, and category manager objects.
+     *
+     * @param customer   The customer object.
+     * @param orders     The list of customer orders.
+     * @param catManger  The category manager object.
+     */
     public CustomerApp(Customer customer, ArrayList<Order> orders, CategoriesManger catManger)
     {
         super(true, Utility.CUSTOMER_APP_PROMPTS);
@@ -41,9 +55,17 @@ public class CustomerApp extends App
         this.catManger = catManger;
     }
 
+    /**
+     * Runs the customer application.
+     * Displays a welcome message, market categories, and menu options.
+     * Handles user input and performs corresponding actions until the user chooses to exit.
+     */
     @Override
     public void run()
     {
+        // scanner
+        Scanner scanner = new Scanner(System.in);
+
         // welcome message
         Utility.printWelcomingMessage("!! Welcome To Toffee Store !!");
         scanner.nextLine();
@@ -64,7 +86,6 @@ public class CustomerApp extends App
             else if (getUserChoice().equals("2"))
             {
                 orders();
-
             }
             else if (getUserChoice().equals("3"))
             {
@@ -93,141 +114,127 @@ public class CustomerApp extends App
 
             // display menu and take input from user
             displayMenuAndTakeInputFromUser("Main");
-
         }
 
     }
 
+    /**
+     * Allows the customer to select a product from the available categories.
+     * Checks if the selected category and product exist and updates the customer's cart accordingly.
+     */
+    /**
+     * Allows the user to select a product from a specified category and add it to their cart.
+     */
+    private void selectProduct() {
+        // Create a scanner to read user input
+        Scanner scanner = new Scanner(System.in);
 
-    private void selectProduct()
-    {
-        // take category name
+        // Prompt the user to enter a category name
         Utility.printFormatedMessage("Category name: ", true);
         String categoryName = scanner.nextLine();
 
-        // if exists display selected menu and complete, else print not exists and return
-        if (catManger.exists(categoryName))
-        {
-            // get it
+        // Check if the category exists
+        if (catManger.exists(categoryName)) {
+            // Retrieve the specified category
             Category tmp = catManger.getCategoryByName(categoryName);
 
-            // display it to user
+            // Display all products in the category to the user
             tmp.displayAllProducts();
 
-            // take product name and check if exists
+            // Prompt the user to enter a product name
             Utility.printFormatedMessage("Product name: ", true);
             String productName = scanner.nextLine();
 
-            // check if product exists
+            // Check if the product exists in the category
             if (tmp.exists(productName)) {
-                // get product
+                // Retrieve the specified product
                 Product p = tmp.getProductByName(productName);
 
-                // print the product
+                // Print the details of the product
                 p.print();
 
-                // take quantity
+                // Prompt the user to enter a quantity
                 Utility.printFormatedMessage("Quantity you intend to buy: ", true);
                 int quantity = scanner.nextInt();
 
-                // check if there is enough quantity in inventory
-                if ((p.getM_availableAmount() - quantity) >= 0)
-                {
-                    // display prompt add product to cart
+                // Check if there is enough quantity in the inventory
+                if ((p.getM_availableAmount() - quantity) >= 0) {
+                    // Add the product to the customer's cart
                     this.customer.getCart().addToCart(p, quantity);
 
-                    // confirming message
+                    // Display a confirmation message
                     Utility.printFormatedMessage("!! Product Added Successfully to your cart !!", false);
-
-                }
-                else
-                {
-                    // not enough
+                } else {
+                    // Not enough quantity in inventory
                     Utility.printFormatedMessage("!! Not Enough " + productName + "s In Inventory !!", false);
                 }
-            }
-            else
-            {
+            } else {
+                // Product doesn't exist in the category
                 Utility.printFormatedMessage("!! Doesn't Exist !!", false);
             }
-        }
-        else
-        {
+        } else {
+            // Invalid category
             Utility.printFormatedMessage("!! Invalid Category !!", false);
         }
     }
 
+    /**
+     * Allows the user to view and manage their orders.
+     */
+    private void orders() {
+        // Create a scanner to read user input
+        Scanner scanner = new Scanner(System.in);
 
-
-    private void orders()
-    {
-        // check if orders is empty "note customer orders
+        // Check if the customer has placed any orders
         if (this.customer.getCustomerOrders().isEmpty()) {
             Utility.printFormatedMessage("!! You Haven't Placed Any Orders Yet !!", false);
             scanner.nextLine();
             return;
         }
 
-        // sep
+        // Print a separator
         System.out.println(Utility.sep);
 
-        // display prompt
+        // Display the menu prompt for orders
         displayMenuAndTakeInputFromUser("Orders");
 
-        // menu loop
-        while (true)
-        {
-            if (getUserChoice().equals("1"))
-            {
-                // display customer all orders
-                if (this.customer.getCustomerOrders().isEmpty())
-                {
-                    // if empty display this message
+        // Menu loop
+        while (true) {
+            if (getUserChoice().equals("1")) {
+                // Display all customer orders
+                if (this.customer.getCustomerOrders().isEmpty()) {
+                    // If there are no orders, display a message
                     Utility.printFormatedMessage("!! No Orders To Display !!", false);
-                }
-                else
-                {
-                    // print all orders
-                    for(Order o: this.customer.getCustomerOrders())
-                    {
+                } else {
+                    // Print details of all orders
+                    for (Order o : this.customer.getCustomerOrders()) {
                         o.print();
                     }
                 }
-
-            }
-            else if (getUserChoice().equals("2"))
-            {
-                // Modify order
+            } else if (getUserChoice().equals("2")) {
+                // Modify an order
                 modifyOrder();
-            }
-            else if (getUserChoice().equals("3"))
-            {
-                // Clear orders
-                if(this.customer.getCustomerOrders().isEmpty())
-                {
+            } else if (getUserChoice().equals("3")) {
+                // Clear all orders
+                if (this.customer.getCustomerOrders().isEmpty()) {
                     Utility.printFormatedMessage(" Already Empty !!", false);
-                }
-                else
-                {
-                    // clear orders
+                } else {
+                    // Clear all orders
                     this.customer.getCustomerOrders().clear();
                     Utility.printFormatedMessage(" Cleared Successfully !!", false);
                 }
-            }
-
-            else if (getUserChoice().equals("4"))
-            {
+            } else if (getUserChoice().equals("4")) {
+                // Exit the orders menu
                 break;
-            }
-            else
-            {
+            } else {
+                // Invalid choice
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // sep
+            // Print a separator
             System.out.println(Utility.sep);
 
-            // display prompt
+            // Display the menu prompt for orders
             displayMenuAndTakeInputFromUser("Orders");
         }
     }
@@ -322,6 +329,9 @@ public class CustomerApp extends App
 
     private void cart()
     {
+        // scanner
+        Scanner scanner = new Scanner(System.in);
+
         // check if cart empty
         if (this.customer.getCart().isEmpty()) {
             Utility.printFormatedMessage("!! Cart Is Empty !!", false);
@@ -395,342 +405,369 @@ public class CustomerApp extends App
 
     }
 
-    private void pay()
-    {
-        // sep
+
+    /**
+     * Performs the payment process.
+     * The method displays a payment menu and allows the user to choose a payment method.
+     * It handles different payment options such as loyalty points, electronic wallet, and on delivery.
+     * Depending on the user's choice, the method places an order and performs necessary payment actions.
+     */
+    private void pay() {
+
+        // Print separator
         System.out.println(Utility.sep);
 
-        // display prompt
+        // Display payment menu prompt
         displayMenuAndTakeInputFromUser("Payment");
 
-        // menu loop
-        while (true)
-        {
-            if (getUserChoice().equals("1"))
-            {
-                if (customer.getPayment().getLoyaltyPoints() >= customer.getCart().totalPrice())
-                {
+        // Menu loop
+        while (true) {
+            // Check user's choice
+            if (getUserChoice().equals("1")) {
+                if (customer.getPayment().getLoyaltyPoints() >= customer.getCart().totalPrice()) {
+                    // Place order using loyalty points
                     placeOrder("LOYALTY_POINTS");
                     Utility.printFormatedMessage("!! Orders Placed Successfully !!", false);
-                }
-                else
-                {
-                    // not enough points
+
+                    // Withdraw money from loyalty points
+                    this.customer.getPayment().withDrawPoints((int) customer.getCart().totalPrice());
+                } else {
+                    // Not enough points
                     Utility.printFormatedMessage("!! Not Enough Points To Purchase !!", false);
                 }
-            }
-            else if (getUserChoice().equals("2"))
-            {
-                // e wallet
-                if (customer.getPayment().getEwallet().getBalance() >= customer.getCart().totalPrice())
-                {
-                    // place order for each, and add orders
+            } else if (getUserChoice().equals("2")) {
+                // E-wallet payment
+                if (customer.getPayment().getEwallet().getBalance() >= customer.getCart().totalPrice()) {
+                    // Place order using electronic wallet
                     placeOrder("ELECTRONIC_WALLET");
                     Utility.printFormatedMessage("!! Orders Placed Successfully !!", false);
-                }
-                else
-                {
+
+                    // Withdraw money from e-wallet
+                    this.customer.getPayment().getEwallet().withdraw(customer.getCart().totalPrice());
+                } else {
                     Utility.printFormatedMessage("!! Not Enough Balance In EWallet To Purchase !!", false);
                 }
-            }
-            else if (getUserChoice().equals("3"))
-            {
-                // place order for each, and add orders
+            } else if (getUserChoice().equals("3")) {
+                // Place order for on delivery payment
                 placeOrder("ON_DELIVERY");
                 Utility.printFormatedMessage("!! Orders Placed Successfully !!", false);
                 break;
-
-            }
-            else if (getUserChoice().equals("4"))
-            {
+            } else if (getUserChoice().equals("4")) {
+                // Exit payment process
                 break;
-            }
-            else
-            {
+            } else {
+                // Invalid choice
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // sep
+            // Print separator
             System.out.println(Utility.sep);
 
-            // display prompt
+            // Display payment menu prompt
             displayMenuAndTakeInputFromUser("Payment");
         }
     }
 
-    private void placeOrder(String paymentMethod)
-    {
-        // place order for each, and add orders
-        for(Product product: this.customer.getCart().getGoods())
-        {
-            // create order and place it
+    /**
+     * Places an order for each product in the customer's cart.
+     * For each product in the cart, the method creates an order with the necessary details and places it.
+     * The method also adds the order to the list of orders.
+     * After placing the orders, it clears the customer's cart.
+     *
+     * @param paymentMethod The payment method to be used for the order.
+     */
+    private void placeOrder(String paymentMethod) {
+        // Place an order for each product and add orders
+        for (Product product : this.customer.getCart().getGoods()) {
+            // Create order and place it
             OrderDetails orderDetails = new OrderDetails("", product.getM_productId(), product.getM_productName(), product.getM_availableAmount(), product.getM_productPrice(), (product.getM_productPrice()) * product.getM_availableAmount());
             ShippingInformation sh = new ShippingInformation(this.customer.getShippingInformation());
             Order o = new Order(this.customer.getCustomerId(), this.customer.getUserName(), "PROCESSING", paymentMethod, orderDetails, sh);
             this.customer.placeAnOrder(o);
             this.orders.add(o);
         }
-        // clear cart
+        // Clear the cart
         this.customer.getCart().clear();
     }
-    private void displayPersonalInformation()
-    {
+
+    /**
+     * Displays the personal information of the customer.
+     * The method calls the `displayInfo()` method of the customer to display their personal information.
+     */
+    private void displayPersonalInformation() {
         this.customer.displayInfo();
     }
 
-    private void profile()
-    {
-        // sep
-        System.out.println(Utility.sep);;
 
-        // updated choice
-        String updatedChoice;
+    /**
+     * Displays and manages the user profile menu.
+     * The method displays a menu with different options related to the user's personal information, and it allows the user to choose an option.
+     * The available options are:
+     * 1. Display personal information
+     * 2. Update personal information
+     * 3. Update financial information
+     * 4. Update shipping information
+     * 5. Exit profile menu
+     *
+     * The method uses utility methods to handle user input and calls corresponding methods based on the user's choice.
+     * It loops until the user chooses to exit the profile menu.
+     */
+    private void profile() {
+        // Display separator
+        System.out.println(Utility.sep);
 
-        // display menu
+        // String to store the user's choice
+        String userChoice;
+
+        // Display menu for personal information
         displayMenuAndTakeInputFromUser("PersonalInfo");
 
+        // Main loop
+        while (true) {
+            userChoice = getUserChoice();
 
-        // main loop
-        while (true)
-        {
-            if (getUserChoice().equals("1"))
-            {
+            if (userChoice.equals("1")) {
+                // Display personal information
                 displayPersonalInformation();
-            }
-            else if (getUserChoice().equals("2"))
-            {
-                // update
+            } else if (userChoice.equals("2")) {
+                // Update personal information
                 updatePersonalInformation();
-            }
-            else if (getUserChoice().equals("3"))
-            {
-
-                // to update financial you have to convert otp
+            } else if (userChoice.equals("3")) {
+                // To update financial information, OTP verification is required
                 otpSystem otpSystem = new otpSystem(customer.getEmail(), customer.getUserName());
                 otpSystem.run();
 
-                // display payemnt
+                // Display payment information
                 this.customer.getPayment().print();
 
-                // update
+                // Update financial information
                 updateFinancials();
-            }
-            else if (getUserChoice().equals("4"))
-            {
-                // sep
-                System.out.println(Utility.sep);;
+            } else if (userChoice.equals("4")) {
+                // Display separator
+                System.out.println(Utility.sep);
 
-                // display it first
+                // Display current shipping information
                 this.customer.getShippingInformation().print();
+
+                // Update shipping information
                 updateShippingInformation();
-            }
-            else if (getUserChoice().equals("5"))
-            {
-               break;
-            }
-            else
-            {
+            } else if (userChoice.equals("5")) {
+                // Exit profile menu
+                break;
+            } else {
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // sep
+            // Display separator
             System.out.println(Utility.sep);
 
-            // display menu
+            // Display menu for personal information
             displayMenuAndTakeInputFromUser("PersonalInfo");
         }
     }
 
-    private void updatePersonalInformation()
-    {
-        // display sep
+
+
+    /**
+     * Updates the personal information of the customer.
+     * The method prompts the user to choose an option for updating personal information and performs the corresponding update.
+     * The available options are:
+     * 1. Update username
+     * 2. Update phone number
+     * 3. Update email
+     *
+     * The method uses utility methods to validate and retrieve the updated information from the user.
+     * Once the information is updated, the corresponding customer fields are updated, and a success message is displayed.
+     * If an invalid option is chosen, an error message is displayed.
+     */
+    private void updatePersonalInformation() {
+        // Display separator
         System.out.println(Utility.sep);
 
-
-        // display menu
+        // Display menu for personal updates
         displayMenuAndTakeInputFromUser("personalUpdates");
 
+        // Initialize answer string
+        String answer;
 
-        // answer s
-        String s;
-
-        if (getUserChoice().equals("1"))
-        {
-            // sep
+        // Process user choice
+        if (getUserChoice().equals("1")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take user name
-            s = Utility.getValidNameFromUser(true);
+            // Prompt for updated username
+            answer = Utility.getValidNameFromUser(true);
 
-            // update it in user
-            this.customer.setUserName(s);
+            // Update username in customer
+            this.customer.setUserName(answer);
 
             Utility.printFormatedMessage("!! Updated Username successfully !!", false);
-        }
-        else if (getUserChoice().equals("2"))
-        {
-            // sep
+        } else if (getUserChoice().equals("2")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take phone number
-            s = Utility.getValidPhoneNumber(true);
+            // Prompt for updated phone number
+            answer = Utility.getValidPhoneNumber(true);
 
-            // update it in user
-            this.customer.setPhoneNumber(s);
+            // Update phone number in customer
+            this.customer.setPhoneNumber(answer);
 
             Utility.printFormatedMessage("!! Updated Phone Number successfully !!", false);
-        }
-        else if (getUserChoice().equals("3"))
-        {
-            // sep
+        } else if (getUserChoice().equals("3")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take email
-            s = Utility.getValidEmailFromUser(true);
+            // Prompt for updated email
+            answer = Utility.getValidEmailFromUser(true);
 
-            // update it in user
-            this.customer.setEmail(s);
+            // Update email in customer
+            this.customer.setEmail(answer);
 
             Utility.printFormatedMessage("!! Updated Email successfully !!", false);
-        }
-        else
-        {
+        } else {
             Utility.printFormatedMessage("!! Invalid !!", false);
         }
     }
 
-    private void updateFinancials()
-    {
-        // display sep
+    /**
+     * Updates the financial information of the customer.
+     * The method prompts the user to choose an option for updating financials and performs the corresponding update.
+     * The available options are:
+     * 1. Add points to Loyalty points
+     * 2. Add money to Ewallet
+     *
+     * The method uses utility methods to validate and retrieve the updated information from the user.
+     * Once the information is updated, the corresponding customer fields are updated, and a success message is displayed.
+     * If an invalid option is chosen, an error message is displayed.
+     */
+    private void updateFinancials() {
+        // Create a scanner object to read user input
+        Scanner scanner = new Scanner(System.in);
+
+        // Display separator
         System.out.println(Utility.sep);
 
-        // display menu
+        // Display menu for financial updates
         System.out.println("1- Add points to Loyalty points");
         System.out.println("2- Add money to your Ewallet");
         System.out.print("\nPlease enter a choice: ");
 
-
-        // take value from user
+        // Take user's choice
         String updateChoice = scanner.nextLine();
 
-        // answer s
+        // Initialize answer amount
         double amount;
 
-        if (updateChoice.equals("1"))
-        {
-            //sep
+        // Process user choice
+        if (updateChoice.equals("1")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take points
+            // Prompt for loyalty points amount
             amount = Utility.getValidAmountOfNumberFromUser();
             int points = (int) amount;
 
-            // update it in user
+            // Update loyalty points in customer payment
             this.customer.getPayment().addPoints(points);
 
             Utility.printFormatedMessage("!! Points Added Successfully !!", false);
-        }
-        else if (updateChoice.equals("2"))
-        {
+        } else if (updateChoice.equals("2")) {
+            // Display separator
             System.out.println(Utility.sep);
+
+            // Prompt for amount to deposit to Ewallet
             amount = Utility.getValidAmountOfNumberFromUser();
 
-            // update it in user
+            // Update Ewallet balance in customer payment
             this.customer.getPayment().getEwallet().deposit(amount);
 
             Utility.printFormatedMessage("!! Money Added To Your EWallet Successfully !!", false);
-        }
-        else
-        {
-            Utility.printFormatedMessage("!! Invalid !!",false);
+        } else {
+            Utility.printFormatedMessage("!! Invalid !!", false);
         }
     }
+    /**
+     * Updates the shipping information of the customer.
+     * The method prompts the user to choose an option for updating shipping information and performs the corresponding update.
+     * The available options are:
+     * 1. Recipient name
+     * 2. Recipient phone number
+     * 3. Recipient email
+     * 4. Recipient address
+     * 5. Recipient city
+     *
+     * The method uses utility methods to validate and retrieve the updated information from the user.
+     * Once the information is updated, the corresponding customer fields are updated, and a success message is displayed.
+     * If an invalid option is chosen, an error message is displayed.
+     */
+    private void updateShippingInformation() {
+        // Create a scanner object to read user input
+        Scanner scanner = new Scanner(System.in);
 
-    private void updateShippingInformation()
-    {
-        // sep
+        // Display separator
         System.out.println(Utility.sep);
 
+        // Display menu for shipping information updates
         System.out.println("1- Recipient name");
-        // display menu
-        System.out.println("2- Recipient phoneNumber");
-
+        System.out.println("2- Recipient phone number");
         System.out.println("3- Recipient email");
-        // display menu
         System.out.println("4- Recipient address");
-
         System.out.println("5- Recipient city");
-
         System.out.print("\nPlease enter a choice to update: ");
 
-        // take value from user
+        // Take user's choice
         String updateChoice = scanner.nextLine();
 
-        // answer s
+        // Initialize answer string
         String s;
 
-
-        if (updateChoice.equals("1"))
-        {
-            // sep
+        // Process user choice
+        if (updateChoice.equals("1")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take name from user
+            // Prompt for recipient name
             s = Utility.getValidNameFromUser(true);
 
-            // update it in user
+            // Update recipient name in customer's shipping information
             this.customer.getShippingInformation().setRecipientName(s);
-
-        }
-        else if (updateChoice.equals("2"))
-        {
-            // sep
+        } else if (updateChoice.equals("2")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take phoneNumber from user
+            // Prompt for recipient phone number
             s = Utility.getValidPhoneNumber(true);
 
-            // update it in user
+            // Update recipient phone number in customer's shipping information
             this.customer.getShippingInformation().setRecipientPhoneNumber(s);
-
-        }
-        else if (updateChoice.equals("3"))
-        {
-            // sep
+        } else if (updateChoice.equals("3")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take email from user
+            // Prompt for recipient email
             s = Utility.getValidEmailFromUser(true);
 
-            // update it in user
+            // Update recipient email in customer's shipping information
             this.customer.getShippingInformation().setEmail(s);
-
-        }
-        else if (updateChoice.equals("4"))
-        {
-            // sep
+        } else if (updateChoice.equals("4")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take address from user
+            // Prompt for recipient address
             s = Utility.getValidAddressFromUser(true);
 
-            // update it in user
+            // Update recipient address in customer's shipping information
             this.customer.getShippingInformation().setShippingAddress(s);
-
-        }
-        else if (updateChoice.equals("5"))
-        {
-            // sep
+        } else if (updateChoice.equals("5")) {
+            // Display separator
             System.out.println(Utility.sep);
 
-            // take city from user
+            // Prompt for recipient city
             s = Utility.getValidCityFromUser();
 
-            // update it in user
+            // Update recipient city in customer's shipping information
             this.customer.getShippingInformation().setCity(s);
-        }
-        else
-        {
+        } else {
             Utility.printFormatedMessage("!! Invalid !!", false);
         }
 

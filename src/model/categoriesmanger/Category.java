@@ -1,9 +1,10 @@
 package model.categoriesmanger;
 import java.util.*;
-
-public class Category
-{
-    /* Static attributes (related to class only, and have nothing to do with instance) */
+/**
+ * The Category class represents a category of products. It stores information about the category's name, the number of products it contains, and a list of products in the category.
+ */
+public class Category {
+    /* Static attributes (related to class only, and have nothing to do with an instance) */
     private static int s_categoriesCount;
 
     /* Instance attributes */
@@ -11,261 +12,233 @@ public class Category
     private int n_products;
     private ArrayList<Product> t_products;
 
+    /* Constructors */
 
-
-    /* Constructors and Destructor */
-
-    public Category()
-    {
+    /**
+     * Creates a new Category object with default values.
+     */
+    public Category() {
         this.m_name = "None";
         this.n_products = 0;
-
-        // allocate arrayList with 200 products as a start
         this.t_products = new ArrayList<Product>(200);
-
-        // increment number of created Categories (class entire program level)
         Category.s_categoriesCount++;
     }
 
     /**
-     * Construct a new Category object
+     * Creates a new Category object with the specified name.
      *
-     * @param t_name Name of to be created Category
+     * @param t_name The name of the category.
      */
-    public Category(String t_name)
-    {
-        // Set instance attributes
+    public Category(String t_name) {
         this.m_name = t_name;
         this.n_products = 0;
         this.t_products = new ArrayList<Product>(0);
-
-        // Increment number of created Categories (class entire program level)
         Category.s_categoriesCount++;
     }
 
     /**
-     * Constructor to create a new category with a given name and a vector of products.
+     * Creates a new Category object with the specified name and list of products.
      *
-     * @param t_name     Name of the category to be created
-     * @param t_products Vector of products for the category
+     * @param t_name     The name of the category.
+     * @param t_products The list of products in the category.
      */
-    public Category(String t_name, ArrayList<Product> t_products)
-    {
+    public Category(String t_name, ArrayList<Product> t_products) {
         this.m_name = t_name;
         this.n_products = t_products.size();
         this.t_products = t_products;
-
-        // increment number of created Categories (class entire program level)
-        s_categoriesCount++;
+        Category.s_categoriesCount++;
     }
 
     //////////////////////////////////////////// Setters And Getters (Encapsulation) /////////////////////////////////////////////////////////////////
 
     /**
-     * Set Category's name
+     * Sets the name of the category.
      *
-     * @param t_name CategoryName - newName
+     * @param t_name The new name of the category.
      */
     public void setName(String t_name) {
-        // update current name
         this.m_name = t_name;
     }
 
-
     /**
-     * Returns current of category
+     * Returns the current name of the category.
      *
-     * @return String Categories current name
+     * @return The current name of the category.
      */
-    public String getName() {
+    public String getName()
+    {
         return this.m_name;
     }
 
-
     /**
-     * Sets Current Number of Categories
+     * Sets the number of products in the category.
      *
-     * @param n Number of products in Categories
+     * @param n The number of products in the category.
      */
     public void setNumberOfProducts(int n) {
         this.n_products = n;
     }
 
-
     /**
-     * Returns current number of products
+     * Returns the current number of products in the category.
      *
-     * @return int Current number of products
+     * @return The current number of products in the category.
      */
     public int getNumberOfProducts() {
         return this.n_products;
     }
 
-
     /**
-     * Returns all products in the category
+     * Returns all the products in the category.
      *
-     * @return Vector<Product> All products in the category
+     * @return A list of all the products in the category.
      */
     public ArrayList<Product> getAllProducts() {
         return this.t_products;
     }
 
     /**
-     * Adds new product to Category.
+     * Adds a new product to the category.
      *
-     * @param t_name   newProduct's name
-     * @param t_descr  newProduct's description
-     * @param t_price  newProduct's initial price
-     * @param t_amount newProduct's available amount
-     * @return Product newProduct
+     * @param t_name   The name of the new product.
+     * @param t_descr  The description of the new product.
+     * @param t_price  The initial price of the new product.
+     * @param t_amount The available amount of the new product.
+     * @return The newly created Product object.
      */
     public Product addProduct(String t_name, String t_descr, double t_price, int t_amount) {
-        // create new product
         Product p = new Product(t_name, this.m_name, t_descr, t_price, t_amount);
         this.t_products.add(p);
         return p;
     }
 
-
     /**
-     * Adds new product to Category
+     * Adds a new product to the category.
      *
-     * @param p Product object to add
-     * @return Product  newProduct
+     * @param p The Product object to add.
+     * @return The added Product object.
      */
-    public Product addProduct(Product p)
-    {
-       this.t_products.add(p);
-       this.n_products++;
-
+    public Product addProduct(Product p) {
+        this.t_products.add(p);
+        this.n_products++;
         return p;
     }
 
     /**
-     *  Removes a product by name
+     * Removes a product from the category based on its name.
      *
-     * @param t_name Name of prodcut that will be removed
-     * @return Product Removed product
+     * @param t_name The name of the product to remove.
+     * @return The removed Product object, or a new empty Product object if the product was not found.
      */
-    public Product RemoveProduct(String t_name)
-    {
-        // check if exists
+    public Product removeProduct(String t_name) {
         ListIterator<Product> it = t_products.listIterator();
         while (it.hasNext()) {
             Product p = it.next();
             if (compareByName(p, t_name)) {
-                // if product found store it in temp, then remove it
                 Product removedProduct = p;
                 it.remove();
-
-                // reduce product count
                 this.n_products--;
-
-                // return the erased one
                 return removedProduct;
             }
         }
-
         System.out.println("Couldn't Find Product with name: " + t_name + " To Erase............!");
         return new Product();
     }
 
     /**
-     * @brief Takes product name and returns its index
+     * Searches for a product in the category based on its name.
      *
-     * @param t_productName Name of product
-     * @return int Index of product
+     * @param t_productName The name of the product to search for.
+     * @return The index of the product if found, or -1 if not found.
      */
     public int searchProductByName(String t_productName) {
-        // check if product exists
         if (exists(t_productName)) {
             ListIterator<Product> it = t_products.listIterator();
             while (it.hasNext()) {
                 if (compareByName(it.next(), t_productName)) {
-                    // return index
                     return it.previousIndex();
                 }
             }
         }
-
         System.out.println("Couldn't Find Product with name: " + t_productName + "............!");
         return -1;
     }
 
     /**
-     * @brief Takes productName and returns reference to it, so as user be able to update it
+     * Returns a product from the category based on its name.
      *
-     * @param t_productName Products'Name
-     * @return Product& The product
+     * @param t_productName The name of the product to retrieve.
+     * @return The Product object with the specified name, or null if not found.
      */
     public Product getProductByName(String t_productName) {
         return t_products.get(searchProductByName(t_productName));
     }
 
+    /**
+     * Displays all products in the category.
+     */
     public void displayAllProducts() {
-        if (IsEmpty()) {
+        if (isEmpty()) {
             System.out.println("------------------------------------ " + this.m_name + " Department Is Empty ------------------------------------");
         } else {
-            // header
             System.out.println("------------------------------------ " + this.m_name + " ------------------------------------");
-
-            // print each product
             for (Product p : t_products) {
                 p.print();
             }
-
         }
     }
 
     /**
-     * &#064;brief
+     * Checks if a product with the given name exists in the category.
      *
-     * @param t_productName
-     * @return true
-     * @return false
+     * @param t_productName The name of the product to check.
+     * @return true if the product exists in the category, false otherwise.
      */
     public boolean exists(String t_productName) {
         for (Product tProduct : t_products) {
             if (compareByName(tProduct, t_productName)) {
-                // it not pointing the element after the last, then it found something
                 return true;
             }
         }
-
-        // if it hasn't found something then return false
         return false;
     }
 
+    /**
+     * Checks if a product exists in the category.
+     *
+     * @param t_product The Product object to check.
+     * @return true if the product exists in the category, false otherwise.
+     */
     public boolean exists(Product t_product) {
         return t_products.contains(t_product);
     }
 
-    public void clear()
-    {
+    /**
+     * Clears the list of products in the category.
+     */
+    public void clear() {
         this.t_products.clear();
     }
+
     /**
-     *  Checks whether category is empty or not
+     * Checks whether the category is empty or not.
      *
-     * @return true if category is empty
-     *  false if category isn't empty
+     * @return true if the category is empty, false otherwise.
      */
-    public boolean IsEmpty() {
+    public boolean isEmpty() {
         return t_products.isEmpty();
     }
 
     /**
-     * Takse product and t_name, and compare product.name with the passed name (string)
-     * main purpose of this function is work as lamabda function in find_if
+     * Compares a product's name with a given name.
      *
-     * @param p     Product whose name will be compared
-     * @param t_name Which will be compared with Product's name
-     * @return true if p.GetName() = t_name
-     * false if p.GetName() != t_name
+     * @param p       The Product object to compare.
+     * @param t_name  The name to compare with the product's name.
+     * @return true if the product's name is equal to the given name, false otherwise.
      */
     public boolean compareByName(Product p, String t_name) {
         return p.getM_productName().equals(t_name);
     }
 }
+
 

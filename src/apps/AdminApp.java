@@ -11,18 +11,41 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * The AdminApp class represents an administrative application that extends the App class.
+ * It provides functionality specific to the admin role, such as managing categories, customers, and orders.
+ */
 public class AdminApp extends App
 {
     /* Instance attributes */
+
+    /**
+     * The admin associated with the application.
+     */
     private Admin admin;
 
+    /**
+     * The list of customers in the application.
+     */
     private ArrayList<Customer> customers;
 
+    /**
+     * The list of orders in the application.
+     */
     private ArrayList<Order> orders;
+
+    /**
+     * The category manager for managing categories.
+     */
     private CategoriesManger catManger;
 
 
     /* Constructors */
+
+    /**
+     * Default constructor for the AdminApp class.
+     * Initializes the attributes with default values.
+     */
     public AdminApp()
     {
         // init parent
@@ -35,6 +58,15 @@ public class AdminApp extends App
         this.orders = new ArrayList<Order>();
     }
 
+    /**
+     * Parameterized constructor for the AdminApp class.
+     * Initializes the attributes with the provided values.
+     *
+     * @param admin     The admin associated with the application.
+     * @param customers The list of customers in the application.
+     * @param orders    The list of orders in the application.
+     * @param categoriesManger The category manager for managing categories.
+     */
     public AdminApp(Admin admin, ArrayList<Customer> customers, ArrayList<Order> orders, CategoriesManger categoriesManger)
     {
         // init attributes
@@ -47,49 +79,99 @@ public class AdminApp extends App
 
     /* Setters & Getters (encapsulation) */
 
-    public void setAdmin(Admin admin) {
+    /**
+     * Sets the admin for the application.
+     *
+     * @param admin The admin to set.
+     */
+    public void setAdmin(Admin admin)
+    {
         this.admin = admin;
     }
 
+    /**
+     * Sets the customers for the application.
+     *
+     * @param customers The list of customers to set.
+     */
     public void setCustomers(ArrayList<Customer> customers) {
         this.customers = customers;
     }
 
+    /**
+     * Sets the orders for the application.
+     *
+     * @param orders The list of orders to set.
+     */
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
 
+    /**
+     * Sets the category manager for the application.
+     *
+     * @param catManger The category manager to set.
+     */
     public void setCatManger(CategoriesManger catManger) {
         this.catManger = catManger;
     }
 
+    /**
+     * Returns the admin associated with the application.
+     *
+     * @return The admin.
+     */
     public Admin getAdmin() {
         return admin;
     }
 
+    /**
+     * Returns the list of customers in the application.
+     *
+     * @return The list of customers.
+     */
     public ArrayList<Customer> getCustomers() {
         return customers;
     }
 
+    /**
+     * Returns the list of orders in the application.
+     *
+     * @return The list of orders.
+     */
     public ArrayList<Order> getOrders() {
         return orders;
     }
 
+    /**
+     * Returns the category manager for the application.
+     *
+     * @return The category manager.
+     */
     public CategoriesManger getCatManger() {
         return catManger;
     }
 
     /* Instance Methods */
+
+    /**
+     * Runs the admin application.
+     * Displays a welcome message, displays the menu, and takes input from the user.
+     * Executes different actions based on the user's input until the application is stopped.
+     */
     @Override
     public void run()
     {
-        // welcome message
+        // Scanner
+        Scanner scanner = new Scanner(System.in);
+
+        // Welcome message
         Utility.printWelcomingMessage("!! Welcome " + this.admin.getUserName() + " !!");
 
-        // display menu and take input from user
+        // Display menu and take input from user
         displayMenuAndTakeInputFromUser("Main");
 
-        // main loop
+        // Main loop
         while (getAppStatus())
         {
             if (getUserChoice().equals("1"))
@@ -127,18 +209,25 @@ public class AdminApp extends App
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // separator
+            // Separator
             System.out.println(Utility.sep);
 
-            // display menu and take input from user
+            // Display menu and take input from user
             displayMenuAndTakeInputFromUser("Main");
         }
     }
 
-
+    /**
+     * Manages the categories in the application.
+     * Displays the menu for modifying categories and executes different actions based on user input.
+     * Continues the loop until the user chooses to exit.
+     */
     private void manageCategories()
     {
-        // sep
+        // Scanner
+        Scanner scanner = new Scanner(System.in);
+
+        // Separator
         System.out.println(Utility.sep);
 
         // display menu and take input from user
@@ -247,12 +336,20 @@ public class AdminApp extends App
 
     }
 
+    /**
+     * Manages the products in the application.
+     * Displays the menu for modifying products and executes different actions based on user input.
+     * Continues the loop until the user chooses to exit.
+     */
     public void manageProducts()
     {
-        // display sep
+        // Scanner
+        Scanner scanner = new Scanner(System.in);
+
+        // Display separator
         System.out.println(Utility.sep);
 
-        // display menu
+        // Display menu
         displayMenuAndTakeInputFromUser("ModifyProducts");
 
         // main loop
@@ -266,27 +363,31 @@ public class AdminApp extends App
                 double pricePerUnit;
                 int availableAmount;
 
+
                 // take name
                 productName = Utility.getValidProductNameFromUser(false);
 
-                // take description
-                System.out.print("Product description (in one line): ");
-                description = scanner.nextLine();
+                //sep
+                System.out.println(Utility.sep);
 
                 // take price per unit
                 pricePerUnit = Utility.getValidPrice(false);
 
-                // take amount
-                System.out.print("Available amount: ");
-                availableAmount = (int) Utility.getValidAmountOfNumberFromUser();
-                scanner.nextLine();
+                //sep
+                System.out.println(Utility.sep);
 
-                // create product
-                category = scanner.nextLine();
-                Product product = new Product(productName, category, description, pricePerUnit, availableAmount);
+                // take amount
+                availableAmount = (int) Utility.getValidAmountOfNumberFromUser();
+
+                //sep
+                System.out.println(Utility.sep);
 
                 // category to add new product to
                 System.out.print("Category ( if category doesn't exist it will be created implicitly ): ");
+
+                // create product
+                category = scanner.nextLine();
+                Product product = new Product(productName, category, "", pricePerUnit, availableAmount);
 
 
                 // check if cat exists
@@ -333,7 +434,7 @@ public class AdminApp extends App
                 if (catManger.GetProductByNameThroughAllCat(productName).getKey())
                 {
                     // remove it
-                    catManger.getCategoryByName(catManger.GetProductByNameThroughAllCat(productName).getValue().getM_productCategory()).RemoveProduct(productName);
+                    catManger.getCategoryByName(catManger.GetProductByNameThroughAllCat(productName).getValue().getM_productCategory()).removeProduct(productName);
 
                     // confirming message
                     Utility.printFormatedMessage("!! Removed Successfully !!", false);
@@ -377,9 +478,16 @@ public class AdminApp extends App
         }
     }
 
-
+    /**
+     * Manages the customers in the application.
+     * Displays the menu for modifying customers and executes different actions based on user input.
+     * Continues the loop until the user chooses to exit.
+     */
     void manageCustomers()
     {
+        // Scanner
+        Scanner scanner = new Scanner(System.in);
+
         // display sep
         System.out.println(Utility.sep);
 
@@ -467,61 +575,65 @@ public class AdminApp extends App
         }
     }
 
-
+    /**
+     * Manages the orders in the application.
+     * Displays the menu for modifying orders and executes different actions based on user input.
+     * Continues the loop until the user chooses to exit.
+     */
     public void manageOrders()
     {
-        // scanner
+        // Scanner
         Scanner scanner = new Scanner(System.in);
 
-        // sep
+        // Separator
         System.out.println(Utility.sep);
 
-        // display proper prompt and take choice from user
+        // Display proper prompt and take choice from user
         displayMenuAndTakeInputFromUser("ModifyOrders");
 
-        // main loop
+        // Main loop
         while (true)
         {
             if (getUserChoice().equals("1"))
             {
-                // check if empty
+                // Check if empty
                 if (orders.isEmpty())
                 {
                     Utility.printFormatedMessage("!! No Orders !!", false);
                 }
                 else
                 {
-                    // display all orders
+                    // Display all orders
                     for (Order order : orders)
                     {
                         order.print();
                     }
                 }
             }
+//            else if (getUserChoice().equals("2"))
+//            {
+//
+//            }
             else if (getUserChoice().equals("2"))
             {
-
-            }
-            else if (getUserChoice().equals("3"))
-            {
-                // get Order id you want to remove
+                // Get Order ID to remove
                 String orderId;
-                Utility.printFormatedMessage("Order id (e.g, FCAI-ORDER-1 ): ", false);
+                Utility.printFormatedMessage("Order ID (e.g., FCAI-ORDER-1): ", true);
                 orderId = scanner.next();
 
-                // if valid Order id
+                // If valid Order ID
                 if (Utility.isValidOrderId(orderId))
                 {
-                    // check if exists
-                    Optional<Customer> customerToRemove = customers.stream()
-                            .filter(c -> c.getCustomerId().equals(orderId))
+                    // Check if exists
+                    Optional<Order> orderToRemove = orders.stream()
+                            .filter(o -> o.getOrderId().equals(orderId))
                             .findFirst();
 
-                    if (customerToRemove.isPresent())
+                    if (orderToRemove.isPresent())
                     {
-                        // remove him
-                        customers.remove(customerToRemove.get());
-                        Utility.printFormatedMessage("!! Order With Id (" + orderId + ") Was Removed Successfully !!", false);
+                        // Remove the order
+                        orders.remove(orderToRemove.get());
+                        Utility.printFormatedMessage("!! Order With ID (" + orderId + ") Was Removed Successfully !!", false);
                     }
                     else
                     {
@@ -530,24 +642,23 @@ public class AdminApp extends App
                 }
                 else
                 {
-                    Utility.printFormatedMessage("!! Not A Valid OrderId !!", false);
+                    Utility.printFormatedMessage("!! Not A Valid Order ID !!", false);
                 }
-
-
             }
-            else if (getUserChoice().equals("4"))
+            else if (getUserChoice().equals("3"))
             {
-                // clear all orders
-                if (orders.isEmpty()){
+                // Clear all orders
+                if (orders.isEmpty())
+                {
                     Utility.printFormatedMessage("!! Already Empty !!", false);
                 }
                 else
                 {
                     orders.clear();
-                    Utility.printFormatedMessage("!! Cleared Successfully !1", false);
+                    Utility.printFormatedMessage("!! Cleared Successfully !!", false);
                 }
             }
-            else if (getUserChoice().equals("5"))
+            else if (getUserChoice().equals("4"))
             {
                 break;
             }
@@ -556,28 +667,35 @@ public class AdminApp extends App
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // sep
+            // Separator
             System.out.println(Utility.sep);
 
-            // display proper prompt and take choice from user
+            // Display proper prompt and take choice from user
             displayMenuAndTakeInputFromUser("ModifyOrders");
         }
     }
 
+    /**
+     * Displays and manages personal information for the admin.
+     * Displays the menu for personal information and executes different actions based on user input.
+     * Continues the loop until the user chooses to exit.
+     */
     private void personalInformation()
     {
-        // sep
+        // Scanner
+        Scanner scanner = new Scanner(System.in);
+
+        // Separator
         System.out.println(Utility.sep);
 
-        // display proper prompt and take choice from user
+        // Display proper prompt and take choice from user
         displayMenuAndTakeInputFromUser("PersonalInfo");
 
-        // main loop
-        while (true)
-        {
+        // Main loop
+        while (true) {
             if (getUserChoice().equals("1"))
             {
-               admin.displayInfo();
+                admin.displayInfo();
             }
             else if (getUserChoice().equals("2"))
             {
@@ -592,207 +710,211 @@ public class AdminApp extends App
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // sep
+            // Separator
             System.out.println(Utility.sep);
 
-            // display proper prompt and take choice from user
+            // Display proper prompt and take choice from user
             displayMenuAndTakeInputFromUser("PersonalInfo");
         }
     }
 
 
     ///////////////////////////////// Helper Methods ////////////////////////////////
+    /**
+     * Updates a product in the inventory.
+     * Prompts the user to enter a valid category name and product name.
+     * If the category and product exist, it calls the updateValidatedProduct() method to perform the actual update.
+     */
     private void updateProduct()
     {
-        // category name
+        // Category name
         String categoryName;
 
-        // get valid category name from user
+        // Get valid category name from user
         categoryName = Utility.getValidCategoryNameFromUser(false);
 
-        // flag
+        // Flag
         boolean updated = false;
 
-        if (catManger.exists(categoryName))
-        {
-            // get category
+        if (catManger.exists(categoryName)) {
+            // Get category
             Category fetchedCat = catManger.getCategoryByName(categoryName);
 
-            // print category
+            // Print category
             fetchedCat.displayAllProducts();
 
-            // sep
+            // Separator
             System.out.println(Utility.sep);
 
-            // take product name
+            // Take product name
             String productName = Utility.getValidProductNameFromUser(false);
 
-            if (fetchedCat.exists(productName))
-            {
-                // fetch product to update it
+            if (fetchedCat.exists(productName)) {
+                // Fetch product to update it
                 Product fetchedProduct = fetchedCat.getProductByName(productName);
 
-                // print product
+                // Print product
                 fetchedProduct.print();
 
-
-                // call method update product
+                // Call method updateValidatedProduct
                 updateValidatedProduct(fetchedProduct);
-
-            }
-            else
-            {
-                // print product doesn't exists
+            } else {
+                // Print product doesn't exist
                 Utility.printFormatedMessage("!! Doesn't Exist !!", false);
             }
-        }
-        else
-        {
+        } else {
             Utility.printFormatedMessage(" !! Doesn't Exist !!", false);
-
         }
-
     }
 
-
+    /**
+     * Updates a validated product based on user input.
+     * Displays a menu for updating product details and performs the requested updates on the given product.
+     * Continues the loop until the user chooses to go back to the previous menu.
+     *
+     * @param product The product to be updated.
+     */
     private void updateValidatedProduct(Product product)
     {
-        // sep
+        // Scanner
+        Scanner scanner = new Scanner(System.in);
+
+        // Separator
         System.out.println(Utility.sep);
 
-        // display menu
+        // Display menu
         displayMenuAndTakeInputFromUser("ProductUpdates");
 
-        // bool flag updated
+        // Flag indicating if the product has been updated
         boolean updated = false;
 
-        // sep before each
-        while (true)
-        {
+        while (true) {
             if (getUserChoice().equals("1"))
             {
-                /* update product name */
+                /* Update product name */
 
-                // sep
+                // Separator
                 System.out.println(Utility.sep);
 
-                // take new name from user
+                // Take new name from user
                 String newName = Utility.getValidProductNameFromUser(true);
 
-                // update product name
+                // Update product name
                 product.setM_productName(newName);
 
-                // set flag
+                // Set flag
                 updated = true;
             }
             else if (getUserChoice().equals("2"))
             {
-                // update product description
+                // Update product description
                 String desc = scanner.nextLine();
 
-                // update product description
+                // Update product description
                 product.setM_productDescription(desc);
 
-                // set flag
+                // Set flag
                 updated = true;
             }
             else if (getUserChoice().equals("3"))
             {
-                // update a product available quantity
+                // Update product available quantity
                 double amount = Utility.getValidAmountOfNumberFromUser();
 
-                // update it
-                product.setM_availableAmount((int)amount);
+                // Update it
+                product.setM_availableAmount((int) amount);
 
-                // set flag
+                // Set flag
                 updated = true;
             }
             else if (getUserChoice().equals("4"))
             {
-                // update product unit price
+                // Update product unit price
                 double newPrice = Utility.getValidPrice(true);
 
-                // set it
+                // Set it
                 product.setM_productPrice(newPrice);
 
-                // set flag
+                // Set flag
                 updated = true;
             }
             else if (getUserChoice().equals("5"))
             {
-                // back to previous menu
+                // Go back to the previous menu
                 break;
             }
             else
             {
-                // print invalid choice
+                // Print invalid choice
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-
             if (updated)
             {
-                // print convfirming message
+                // Print confirming message
                 Utility.printFormatedMessage("!! Product Updated Successfully !!", false);
 
-                // break
+                // Break the loop
                 break;
             }
             else
             {
-                // call function again
+                // Call the function again
                 updateValidatedProduct(product);
             }
         }
     }
 
-
-    private void updatePersonalInformation()
-    {
-        // sep
+    /**
+     * Updates the personal information of the admin.
+     * Displays the menu for updating admin information and performs the requested updates based on user input.
+     * Continues the loop until the user chooses to go back to the previous menu.
+     */
+    private void updatePersonalInformation() {
+        // Separator
         System.out.println(Utility.sep);
 
-        // display proper prompt and take option from user
+        // Display proper prompt and take option from user
         displayMenuAndTakeInputFromUser("UpdateAdminInformation");
 
-        // value which data has been updated
+        // Flag indicating whether data has been updated
         boolean isUpdated = false;
 
         while (true)
         {
-            // sep
+            // Separator
             System.out.println(Utility.sep);
 
             if (getUserChoice().equals("1"))
             {
-                // update name
+                // Update name
                 String newName = Utility.getValidNameFromUser(true);
                 this.admin.setUserName(newName);
 
-                // set updated flag
+                // Set updated flag
                 isUpdated = true;
             }
             else if (getUserChoice().equals("2"))
             {
-                // phone number
+                // Update phone number
                 String newPhoneNumber = Utility.getValidPhoneNumber(true);
                 this.admin.setPhoneNumber(newPhoneNumber);
 
-                // set updated flag
+                // Set updated flag
                 isUpdated = true;
             }
             else if (getUserChoice().equals("3"))
             {
-                // update email
+                // Update email
                 String newEmail = Utility.getValidEmailFromUser(true);
                 this.admin.setEmail(newEmail);
 
-                // set updated flag
+                // Set updated flag
                 isUpdated = true;
             }
             else if (getUserChoice().equals("4"))
             {
-                // back to prev menu
+                // Go back to the previous menu
                 break;
             }
             else
@@ -800,22 +922,20 @@ public class AdminApp extends App
                 System.out.println("!! Invalid !!");
             }
 
-            if(isUpdated)
+            if (isUpdated)
             {
-                // confirming message
+                // Confirming message
                 Utility.printFormatedMessage("!! Updated Successfully !!", false);
 
-                // back to pre menu
+                // Go back to the previous menu
                 break;
             }
             else
             {
-                // rerun the function
+                // Re-run the function
                 updatePersonalInformation();
             }
         }
     }
-
-
 
 }

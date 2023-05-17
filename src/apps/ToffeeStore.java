@@ -20,10 +20,27 @@ public class ToffeeStore extends  App
 {
 
     /* Instance Attributes */
+
+    /**
+     * List of administrators associated with the store.
+     */
     private ArrayList<Admin> storeAdmins;
+
+    /**
+     * List of customers associated with the store.
+     */
     private ArrayList<Customer> storeCustomers;
+
+    /**
+     * Manager for managing categories of products in the store.
+     */
     private CategoriesManger storeCatManger;
+
+    /**
+     * List of orders placed in the store.
+     */
     private ArrayList<Order> storeOrders;
+
 
     /**
      * Default constructor of ToffeeStore<br>note: It initializes instance attributes via initialization function.
@@ -34,21 +51,28 @@ public class ToffeeStore extends  App
         Initialization();
     }
 
+    /**
+     * Overrides the run() method from the superclass App.
+     * This method runs the main loop of the program, displaying menus, (loginAsAdmin, loginAsCustomer, SignUp).
+     * taking user input, and performing corresponding actions based on the user's choice.
+     * @see App
+     */
     @Override
     public void run()
     {
-        // sep
+        // Display separator
         System.out.println(Utility.sep);
 
-        // display proper prompt and take choice from user
+        // Display main menu prompt and take input from the user
         displayMenuAndTakeInputFromUser("Main");
 
-        // main loop
+        // Main loop
         while (getAppStatus())
         {
+            // Check user's choice and perform corresponding action
             if (getUserChoice().equals("1"))
             {
-               loginAsAdmin();
+                loginAsAdmin();
             }
             else if (getUserChoice().equals("2"))
             {
@@ -58,25 +82,30 @@ public class ToffeeStore extends  App
             {
                 signUp();
             }
-            else if (getUserChoice().equals("4")){
+            else if (getUserChoice().equals("4"))
+            {
+                // Set app status to false and exit loop
                 setAppStatus(false);
                 break;
             }
             else
             {
+                // Display error message for invalid input
                 Utility.printFormatedMessage("!! Invalid !!", false);
             }
 
-            // sep
+            // Display separator
             System.out.println(Utility.sep);
 
-            // display proper prompt and take choice from user
+            // Display main menu prompt and take input from the user
             displayMenuAndTakeInputFromUser("Main");
         }
     }
 
     /**
-     * Initializes store with hard coded values<br>Works as replacement for database<br>Called in ToffeeStore constructor.
+     * Initializes the store with hard-coded values as a replacement for a database.
+     * This method is called in the constructor of the ToffeeStore class.
+     *
      * @see ToffeeStore
      */
     private void Initialization()
@@ -280,6 +309,15 @@ public class ToffeeStore extends  App
 
         return isAdmin;
     }
+
+    /**
+     * Retrieves an Admin object from the storeAdmins list based on the given username and password.
+     * If a matching admin is found, it is returned; otherwise, a new empty Customer object is returned.
+     *
+     * @param userName The username to search for.
+     * @param password The password to search for.
+     * @return The Admin object that matches the given username and password, or a new empty Admin object if no match is found.
+     */
     private Admin getAdminByName(String userName, String password)
     {
         for(Admin admin: this.storeAdmins)
@@ -292,6 +330,13 @@ public class ToffeeStore extends  App
 
         return new Admin();
     }
+
+    /**
+     * This function takes a Customer credentials (username, password) and check whether he exists in system customers or not.
+     * @param userName Logger username
+     * @param password Logger password
+     * @return true if customer exists in database, else return false.
+     */
     private boolean inCustomers(String userName, String password)
     {
         // flag
@@ -308,17 +353,29 @@ public class ToffeeStore extends  App
 
         return isCustomer;
     }
+
+    /**
+     * Retrieves a Customer object from the storeCustomers list based on the given username and password.
+     * If a matching customer is found, it is returned; otherwise, a new empty Customer object is returned.
+     *
+     * @param userName The username to search for.
+     * @param password The password to search for.
+     * @return The Customer object that matches the given username and password, or a new empty Customer object if no match is found.
+     */
     private Customer getCustomerByName(String userName, String password)
     {
-        // search for it
-        for(Customer customer: this.storeCustomers)
+        // Search for the customer in the storeCustomers list
+        for (Customer customer : this.storeCustomers)
         {
+            // Check if the customer's username and password match the given values
             if (customer.getUserName().equals(userName) && customer.getPassword().equals(password))
             {
+                // Return the matching customer
                 return customer;
             }
         }
 
+        // If no match is found, return a new empty Customer object
         return new Customer();
     }
 }

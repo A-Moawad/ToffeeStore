@@ -1,59 +1,101 @@
 package model.payment;
-
+/**
+ * The EWallet class represents an electronic wallet used for payment.
+ */
 public class EWallet
 {
-    /* static attributes (Related to class only and have nothing to do with instance) */
+
+    /* Static Attributes (related to class only and have nothing to do with instances) */
+
+    /**
+     * The total count of all EWallets created.
+     */
     private static int s_walletsCount;
 
     /* Instance Attributes (instance properties) */
+
+    /**
+     * The unique identifier of the EWallet.
+     */
     private String id;
+
+    /**
+     * The balance of the EWallet.
+     */
     private double balance;
 
     /* Constructors */
+
+    /**
+     * Constructs an EWallet object with a balance of 0.
+     * It generates a unique ID based on the count of EWallets created.
+     */
     public EWallet()
     {
-        // generate id based on wallet whole count
         this.id = "FCAI-EWALLET-" + Integer.toString(++s_walletsCount);
-
-        // init balance
         this.balance = 0;
-
     }
+
+    /**
+     * Constructs an EWallet object with a specified balance.
+     * It generates a unique ID based on the count of EWallets created.
+     *
+     * @param t_balance the initial balance of the EWallet
+     */
     public EWallet(double t_balance)
     {
-        // generate id based on wallet whole count
         this.id = "FCAI-EWALLET-" + Integer.toString(++s_walletsCount);
-
-        // init balance
         this.balance = t_balance;
     }
 
-    /* Setters And Getters  */
+    /* Setters and Getters */
 
-    public String getId() {
+    /**
+     * Retrieves the unique identifier of the EWallet.
+     *
+     * @return the EWallet identifier
+     */
+    public String getId()
+    {
         return id;
     }
 
-    boolean setBalance(double t_balance) {
+    /**
+     * Sets the balance of the EWallet.
+     *
+     * @param t_balance the new balance to set
+     * @return true if the balance was updated successfully, false otherwise
+     * @throws RuntimeException if the balance is less than 0
+     */
+    boolean setBalance(double t_balance)
+    {
         boolean updated = false;
 
-        // validation
         if (t_balance >= 0) {
-            // set it
             this.balance = t_balance;
             updated = true;
         } else {
-            // throw logical error argument
             throw new RuntimeException("!! Balance < 0 !!");
         }
 
         return updated;
     }
 
-    public double getBalance() {
+    /**
+     * Retrieves the balance of the EWallet.
+     *
+     * @return the balance of the EWallet
+     */
+    public double getBalance()
+    {
         return balance;
     }
 
+    /* Instance Methods */
+
+    /**
+     * Prints the details of the EWallet.
+     */
     public void print()
     {
         System.out.println("************* Ewallet Details ************");
@@ -61,71 +103,89 @@ public class EWallet
         System.out.println("Current Balance: " + getBalance() + "$");
     }
 
+    /**
+     * Checks if the EWallet is empty (has a balance of 0).
+     *
+     * @return true if the EWallet is empty, false otherwise
+     */
     public boolean isEmpty()
     {
-
         return this.balance == 0;
     }
 
-    public boolean WithDraw(double t_amount) {
-        // To know whether withdrawn or not
+    /**
+     * Withdraws a specified amount from the EWallet.
+     *
+     * @param t_amount the amount to withdraw
+     * @return true if the withdrawal was successful, false otherwise
+     */
+    public boolean withdraw(double t_amount)
+    {
         boolean withdrawn = false;
 
         if (!isEmpty()) {
-            if (isThereEnoughMoneyToWithdraw(t_amount)) {
-                // Withdraw
+            if (isThereEnoughMoneyToWithdraw(t_amount))
+            {
                 double currentBalance = getBalance();
                 double newBalance = currentBalance - t_amount;
 
-                // Update balance
-                if (setBalance(newBalance)) {
+                if (setBalance(newBalance))
+                {
                     withdrawn = true;
                 }
-            } else {
+            }
+            else
+            {
                 System.out.println("!! Not Enough Balance In Ewallet !!");
             }
-        } else {
+        }
+        else
+        {
             System.out.println("!! Ewallet is empty !!");
         }
 
         return withdrawn;
     }
 
-    public boolean deposit(double amount) {
+    /**
+     * Deposits a specified amount into the EWallet.
+     *
+     * @param amount the amount to deposit
+     * @return true if the deposit was successful, false otherwise
+     */
+    public boolean deposit(double amount)
+    {
         boolean deposited = false;
         double newBalance = balance + amount;
-        if (setBalance(newBalance)) {
+
+        if (setBalance(newBalance))
+        {
             deposited = true;
         }
+
         return deposited;
     }
 
-    public static int getNumberWalletsThisClassMadeSoFar() {
+    /**
+     * Retrieves the number of EWallets created so far by this class.
+     *
+     * @return the number of EWallets created
+     */
+    public static int getNumberWalletsThisClassMadeSoFar()
+    {
         return s_walletsCount;
     }
 
-    private boolean isThereEnoughMoneyToWithdraw(double amount) {
+    /* Private Methods */
+
+    /**
+     * Checks if there is enough money in the EWallet to withdraw a specified amount.
+     *
+     * @param amount the amount to withdraw
+     * @return true if there is enough money, false otherwise
+     */
+    private boolean isThereEnoughMoneyToWithdraw(double amount)
+    {
         return (this.balance - amount) >= 0;
     }
-
-    public boolean withdraw(double amount) {
-        boolean withdrawn = false;
-        if (!isEmpty()) {
-            if (isThereEnoughMoneyToWithdraw(amount)) {
-                double currentBalance = getBalance();
-                double newBalance = currentBalance - amount;
-                if (setBalance(newBalance)) {
-                    withdrawn = true;
-                }
-            } else {
-                System.out.println("!! Not Enough Balance In Ewallet !!");
-            }
-        } else
-        {
-
-            System.out.println("!! Ewallet is empty !!");
-        }
-        return withdrawn;
-    }
-
 }
